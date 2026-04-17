@@ -391,6 +391,35 @@
     .ndp-autosave { font-size: 11px; color: #22AD01; opacity: 0; transition: opacity 0.4s; }
     .ndp-autosave.show { opacity: 1; }
 
+    /* ── Floating Create AI button ── */
+    .ndp-create-fab {
+      position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+      z-index: 20; display: flex; flex-direction: column; align-items: center;
+    }
+    .ndp-create-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid var(--border-content);
+      border-radius: 20px; padding: 7px 14px 7px 10px;
+      font-size: 13px; font-weight: 500; color: var(--text-default);
+      cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      white-space: nowrap; transition: background 0.12s, box-shadow 0.12s;
+    }
+    .ndp-create-btn:hover { background: var(--bg-grey-f8); box-shadow: 0 3px 14px rgba(0,0,0,0.14); }
+    .ndp-create-btn svg { flex-shrink: 0; }
+    .ndp-create-menu {
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: #fff; border: 1px solid var(--border-content);
+      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      min-width: 172px; padding: 4px 0; display: none;
+    }
+    .ndp-create-menu.open { display: block; }
+    .ndp-create-menu-item {
+      display: block; padding: 8px 16px;
+      font-size: 13px; color: var(--text-default) !important;
+      cursor: pointer; text-decoration: none !important; white-space: nowrap;
+    }
+    .ndp-create-menu-item:hover { background: var(--bg-grey-fa); }
+
     /* ── SLASH COMMAND MENU ── */
     #slash-menu {
       position: fixed; z-index: 30000;
@@ -1118,6 +1147,23 @@
            data-placeholder="Start typing, or press / to add a block…"></div>
     </div>
 
+    <!-- Floating Create AI button -->
+    <div class="ndp-create-fab" id="ndp-create-fab">
+      <div class="ndp-create-menu" id="ndp-create-menu">
+        <a class="ndp-create-menu-item" href="#" onclick="return false;">Create tasks</a>
+        <a class="ndp-create-menu-item" href="#" onclick="return false;">Create deal</a>
+        <a class="ndp-create-menu-item" href="#" onclick="return false;">Create proposal</a>
+        <a class="ndp-create-menu-item" href="#" onclick="return false;">Create agreements</a>
+        <a class="ndp-create-menu-item" href="#" onclick="return false;">Create project</a>
+      </div>
+      <button class="ndp-create-btn" onclick="toggleNdpCreateMenu(event)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#22AD01" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C12 2 13 7.5 16.5 9.5C19.5 11.2 23 12 23 12C23 12 19.5 12.8 16.5 14.5C13 16.5 12 22 12 22C12 22 11 16.5 7.5 14.5C4.5 12.8 1 12 1 12C1 12 4.5 11.2 7.5 9.5C11 7.5 12 2 12 2Z"/>
+        </svg>
+        Create
+      </button>
+    </div>
+
     <!-- Footer -->
     <div class="ndp-footer">
       <span class="ndp-footer-meta" id="ndp-footer-meta">Edited just now</span>
@@ -1479,9 +1525,21 @@ function removeMeeting() {
     'Link a meeting</button>';
 }
 
+function toggleNdpCreateMenu(e) {
+  e.stopPropagation();
+  document.getElementById('ndp-create-menu').classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#ndp-create-fab')) {
+    document.getElementById('ndp-create-menu').classList.remove('open');
+  }
+});
+
 function closeNotePanel() {
   document.getElementById('note-detail-panel').classList.remove('open');
   document.getElementById('note-panel-overlay').classList.remove('open');
+  document.getElementById('ndp-create-menu').classList.remove('open');
   closeSlashMenu(); closeFormatToolbar(); closeMeetingPicker(); closeRecordPicker();
 }
 

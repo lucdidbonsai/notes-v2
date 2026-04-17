@@ -1239,6 +1239,13 @@
       border-bottom: 1px solid var(--border-content);
     }
     .zoom-ai-note-meeting-ref strong { color: var(--text-default); font-weight: 500; }
+    .zoom-note-link {
+      color: #22AD01 !important;
+      text-decoration: none;
+      font-size: inherit;
+    }
+    .zoom-note-link:hover { color: #22AD01 !important; text-decoration: underline; }
+    .zoom-note-link svg { display: inline-block; vertical-align: middle; margin-left: 2px; }
     .zoom-ai-note-body { font-size: 13px; color: var(--text-default); line-height: 1.65; }
     .zoom-ai-recap {
       font-size: 13px;
@@ -2049,6 +2056,35 @@
     .ndp-autosave { font-size: 11px; color: #22AD01; opacity: 0; transition: opacity 0.4s; }
     .ndp-autosave.show { opacity: 1; }
 
+    /* ── Floating Create AI button ── */
+    .ndp-create-fab {
+      position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+      z-index: 20; display: flex; flex-direction: column; align-items: center;
+    }
+    .ndp-create-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid var(--border-content);
+      border-radius: 20px; padding: 7px 14px 7px 10px;
+      font-size: 13px; font-weight: 500; color: var(--text-default);
+      cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      white-space: nowrap; transition: background 0.12s, box-shadow 0.12s;
+    }
+    .ndp-create-btn:hover { background: var(--bg-grey-f8); box-shadow: 0 3px 14px rgba(0,0,0,0.14); }
+    .ndp-create-btn svg { flex-shrink: 0; }
+    .ndp-create-menu {
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: #fff; border: 1px solid var(--border-content);
+      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      min-width: 172px; padding: 4px 0; display: none;
+    }
+    .ndp-create-menu.open { display: block; }
+    .ndp-create-menu-item {
+      display: block; padding: 8px 16px;
+      font-size: 13px; color: var(--text-default) !important;
+      cursor: pointer; text-decoration: none !important; white-space: nowrap;
+    }
+    .ndp-create-menu-item:hover { background: var(--bg-grey-fa); }
+
     /* ── Slash command menu ── */
     #ndp-slash-menu {
       position: fixed; z-index: 30000;
@@ -2142,6 +2178,101 @@
     .activity-text-clickable:hover { opacity: 0.85; }
     .zoom-ai-note-card-clickable { cursor: pointer; transition: opacity 0.1s; }
     .zoom-ai-note-card-clickable:hover { opacity: 0.85; }
+
+    /* ── Next Steps — inline in ndp-body ── */
+    /* Task modal must sit above the note panel (z-index 9999) */
+    #task-modal-overlay { z-index: 99999 !important; }
+    /* Clickable li items: hover underline + "Create Task" tooltip */
+    .ndp-ns-section li {
+      cursor: pointer;
+      position: relative;
+    }
+    .ndp-ns-section li:hover {
+      text-decoration: underline dotted #22AD01;
+      text-underline-offset: 3px;
+    }
+    .ndp-ns-section li::before {
+      content: 'Create Task';
+      position: absolute; top: calc(100% + 3px); left: 0;
+      background: #1e1e1e; color: #fff;
+      font-size: 11px; font-weight: 500; white-space: nowrap;
+      padding: 4px 8px; border-radius: 5px; pointer-events: none;
+      z-index: 100; opacity: 0; transition: opacity 0.1s;
+      text-decoration: none;
+    }
+    .ndp-ns-section li:hover::before { opacity: 1; }
+    /* Done state */
+    .ndp-ns-section li.ndp-ns-done { cursor: default; color: var(--text-muted); }
+    .ndp-ns-section li.ndp-ns-done:hover { text-decoration: none; }
+    .ndp-ns-section li.ndp-ns-done:hover::before { opacity: 0; }
+    /* Task chip for items with a task created */
+    .mdp-task-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 7px; border-radius: 4px;
+      font-size: 11px; font-weight: 500; color: #16830b;
+      background: rgba(34,173,1,0.09); text-decoration: none !important;
+      vertical-align: middle; margin-left: 6px;
+    }
+    .mdp-task-chip:hover, .mdp-task-chip:focus, .mdp-task-chip:visited {
+      background: rgba(34,173,1,0.14); color: #16830b !important; text-decoration: none !important;
+    }
+
+    /* ── Task Creation Modal ── */
+    .task-modal-dialog { width: 500px; border-radius: 10px; overflow: hidden; }
+    .task-modal-header { display: flex; align-items: center; justify-content: center; padding: 16px 24px 14px; border-bottom: 1px solid var(--border-content); }
+    .task-modal-title { font-size: 16px; font-weight: 600; color: var(--text-default); }
+    .task-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .task-title-row .task-name-input { flex: 1; width: auto; }
+    .task-status-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 6px; border: none; background: #ede9fe; font-size: 13px; font-weight: 500; color: #5b21b6; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+    .task-status-btn:hover { background: #ddd6fe; }
+    .task-status-btn .task-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #7c3aed; }
+    .task-status-btn .task-status-chevron { color: #7c3aed; opacity: 0.7; margin-left: 1px; }
+    .task-modal-body { padding: 20px 24px; }
+    .task-advanced-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; user-select: none; background: none; border: none; padding: 0; font-family: inherit; }
+    .task-advanced-toggle:hover { color: var(--text-default); }
+    .task-advanced-toggle-chevron { display: inline-block; transition: transform 0.18s ease; }
+    .task-advanced-toggle-chevron--open { transform: rotate(180deg); }
+    .task-advanced-fields { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.25s ease, opacity 0.2s ease; }
+    .task-advanced-fields--open { max-height: 600px; opacity: 1; margin-top: 16px; }
+    .task-field-group { margin-bottom: 16px; }
+    .task-name-input { width: 100%; box-sizing: border-box; height: 38px; font-size: 15px; font-weight: 500; color: var(--text-default); border: 1px solid var(--border-field); border-radius: 6px; padding: 0 12px; background: var(--bg-field, #fff); font-family: inherit; outline: none; transition: border-color 0.12s; }
+    .task-name-input:focus { border-color: #22AD01; }
+    .task-name-input::placeholder { color: var(--text-lighter); font-weight: 400; }
+    .task-fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 16px; }
+    .task-field-block {}
+    .task-field-label { font-size: 13px; font-weight: 500; color: var(--text-default); margin-bottom: 6px; }
+    .task-field-value { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-default); padding: 4px 0; border: none; background: transparent; }
+    .task-field-clickable { cursor: pointer; }
+    .task-field-clickable:hover { color: var(--text-default); }
+    .task-field-placeholder { color: var(--text-lighter); }
+    .task-field-value svg { flex-shrink: 0; color: var(--text-muted); }
+    .task-field-value-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .task-field-assignee { cursor: pointer; }
+    .task-add-link { display: inline-flex; align-items: center; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: none; }
+    .task-add-link:hover { color: var(--text-default) !important; text-decoration: none; }
+    .task-full-row { margin-bottom: 14px; }
+    .task-assignee-avatar { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; background-size: cover; background-position: center; }
+    .task-field-project { position: relative; }
+    .task-project-badge { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+    .task-project-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid var(--border-content); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 200; overflow: hidden; display: none; }
+    .task-project-dropdown.open { display: block; }
+    .task-project-search { padding: 8px 10px; border-bottom: 1px solid var(--border-content); display: flex; align-items: center; gap: 7px; }
+    .task-project-search input { flex: 1; border: none; outline: none; font-size: 13px; color: var(--text-default); background: transparent; font-family: inherit; }
+    .task-project-search input::placeholder { color: var(--text-lighter); }
+    .task-project-list { max-height: 180px; overflow-y: auto; padding: 4px 0; }
+    .task-project-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; cursor: pointer; }
+    .task-project-item:hover { background: var(--bg-grey-fa); }
+    .task-project-item-info { display: flex; flex-direction: column; min-width: 0; }
+    .task-project-item-name { font-size: 13px; font-weight: 500; color: var(--text-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .task-project-item-workspace { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .task-desc-input { width: 100%; box-sizing: border-box; resize: vertical; font-size: 13px; color: var(--text-default); border: 1px solid var(--border-field); border-radius: 6px; padding: 9px 12px; background: var(--bg-field, #fff); font-family: inherit; outline: none; min-height: 72px; transition: border-color 0.12s; }
+    .task-desc-input:focus { border-color: #22AD01; }
+    .task-desc-input::placeholder { color: var(--text-lighter); }
+    .task-modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 24px; border-top: 1px solid var(--border-content); }
+    .task-modal-cancel { font-size: 13px; font-weight: 500; color: var(--text-muted); background: none; border: 1px solid var(--border-content); border-radius: 6px; padding: 0 16px; height: 32px; cursor: pointer; font-family: inherit; transition: background 0.1s, color 0.1s; }
+    .task-modal-cancel:hover { background: var(--bg-grey-f8); color: var(--text-default); }
+    .task-modal-create { font-size: 13px; font-weight: 600; color: #fff; background: #22AD01; border: none; border-radius: 6px; padding: 0 18px; height: 32px; cursor: pointer; font-family: inherit; transition: background 0.1s; }
+    .task-modal-create:hover { background: #1d9801; }
   </style>
 </head>
 <body>
@@ -2560,7 +2691,7 @@
                   <div class="activity-meta"><strong>Zoom</strong> added a note &middot; Jan 20, 10:03 AM</div>
                   <div class="zoom-ai-note-card zoom-ai-note-card-clickable" onclick="openNoteFromItem(this.closest('.activity-item'),'activity')">
                     <div class="zoom-ai-note-meeting-ref">
-                      Meeting: <strong>Strategic Planning Offsite</strong> &middot; 1h &middot; Added by Zoom AI Companion
+                      Meeting: <strong>Strategic Planning Offsite</strong> &middot; 1h &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Summary <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                     <div class="zoom-ai-note-body">
                       <p class="zoom-ai-recap">The team reviewed the competitive landscape and discussed Q1 strategic priorities for the TechStart Labs engagement. Michael Fawler shared internal data suggesting TAM estimates for the enterprise segment should be revised upward. Agreement was reached on a bi-weekly cadence for project syncs.</p>
@@ -2684,7 +2815,7 @@
                   <div class="activity-meta"><strong>Zoom</strong> added a note &middot; Jan 13, 5:03 PM</div>
                   <div class="zoom-ai-note-card zoom-ai-note-card-clickable" onclick="openNoteFromItem(this.closest('.activity-item'),'activity')">
                     <div class="zoom-ai-note-meeting-ref">
-                      Meeting: <strong>Product Demo – Enterprise Plan</strong> &middot; 1h &middot; Added by Zoom AI Companion
+                      Meeting: <strong>Product Demo – Enterprise Plan</strong> &middot; 1h &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Recording <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a> &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Summary <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                     <div class="zoom-ai-note-body">
                       <p class="zoom-ai-recap">Chris Taylor presented the full enterprise plan feature set to Michael Fawler. The demo focused on automation, CRM integrations, and reporting capabilities. Michael confirmed budget approval and expressed strong intent to proceed, pending legal review of contract terms.</p>
@@ -2706,6 +2837,22 @@
                         <li><span class="zoom-ai-check-box"></span><span>Legal team (TechStart Labs) to complete contract review within one week.</span></li>
                         <li><span class="zoom-ai-check-box"></span><span>Schedule onboarding kickoff call for mid-January once contract is signed.</span></li>
                       </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zoom note (no AI Companion): Q1 Kickoff – TechStart Labs — Jan 07, 11:34 AM -->
+              <div class="activity-item">
+                <div class="activity-item-left">
+                  <div class="zoom-ai-avatar" style="background-image: url('./prototype-kit/Zoom-Logo.png');"></div>
+                  <div class="activity-item-line"></div>
+                </div>
+                <div class="activity-item-body">
+                  <div class="activity-meta"><strong>Zoom</strong> added a note &middot; Jan 07, 11:34 AM</div>
+                  <div class="zoom-ai-note-card zoom-ai-note-card-clickable" onclick="openNoteFromItem(this.closest('.activity-item'),'activity')">
+                    <div class="zoom-ai-note-meeting-ref" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
+                      Meeting: <strong>Q1 Kickoff – TechStart Labs</strong> &middot; 45m &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Recording <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                   </div>
                 </div>
@@ -2818,7 +2965,7 @@
                   <div class="note-meta" style="margin-bottom: 4px;"><strong>Zoom</strong> · <span>Jan 20, 10:03 AM</span></div>
                   <div class="zoom-ai-note-card zoom-ai-note-card-clickable">
                     <div class="zoom-ai-note-meeting-ref">
-                      Meeting: <strong>Strategic Planning Offsite</strong> &middot; 1h &middot; Added by Zoom AI Companion
+                      Meeting: <strong>Strategic Planning Offsite</strong> &middot; 1h &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Summary <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                     <div class="zoom-ai-note-body">
                       <p class="zoom-ai-recap">The team reviewed the competitive landscape and discussed Q1 strategic priorities for the TechStart Labs engagement. Michael Fawler shared internal data suggesting TAM estimates for the enterprise segment should be revised upward. Agreement was reached on a bi-weekly cadence for project syncs.</p>
@@ -2883,7 +3030,7 @@
                   <div class="note-meta" style="margin-bottom: 4px;"><strong>Zoom</strong> · <span>Jan 13, 5:03 PM</span></div>
                   <div class="zoom-ai-note-card zoom-ai-note-card-clickable">
                     <div class="zoom-ai-note-meeting-ref">
-                      Meeting: <strong>Product Demo – Enterprise Plan</strong> &middot; 1h &middot; Added by Zoom AI Companion
+                      Meeting: <strong>Product Demo – Enterprise Plan</strong> &middot; 1h &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Recording <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a> &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Summary <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                     <div class="zoom-ai-note-body">
                       <p class="zoom-ai-recap">Chris Taylor presented the full enterprise plan feature set to Michael Fawler. The demo focused on automation, CRM integrations, and reporting capabilities. Michael confirmed budget approval and expressed strong intent to proceed, pending legal review of contract terms.</p>
@@ -2914,6 +3061,21 @@
                     <div class="field-popup-menu popup-menu-120" style="position:relative; box-shadow: var(--box-shadow-medium);">
                       <a class="field-popup-menu-list-item" onclick="openNoteFromItem(this.closest('.note-item'),'notes')">Edit</a>
                       <a class="field-popup-menu-list-item field-popup-menu-list-item--danger" onclick="deleteNote(this)">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zoom note (no AI Companion): Q1 Kickoff – TechStart Labs — Jan 07, 11:34 AM -->
+              <div class="note-item">
+                <div class="activity-item-left">
+                  <div class="zoom-ai-avatar" style="background-image: url('./prototype-kit/Zoom-Logo.png');"></div>
+                </div>
+                <div class="note-item-body" onclick="openNoteFromItem(this.closest('.note-item'),'notes')">
+                  <div class="note-meta" style="margin-bottom: 4px;"><strong>Zoom</strong> · <span>Jan 07, 11:34 AM</span></div>
+                  <div class="zoom-ai-note-card zoom-ai-note-card-clickable">
+                    <div class="zoom-ai-note-meeting-ref" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
+                      Meeting: <strong>Q1 Kickoff – TechStart Labs</strong> &middot; 45m &middot; Added by Zoom &middot; <a href="#" class="zoom-note-link" onclick="event.stopPropagation(); return false;">View Recording <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                     </div>
                   </div>
                 </div>
@@ -3586,6 +3748,11 @@
       recording: 'https://zoom.us/rec/share/strategic-planning-offsite-jan20',
       noteTitle: 'Zoom AI: Strategic Planning Offsite',
       noteBody: '<p>The team reviewed the competitive landscape and discussed Q1 strategic priorities for the TechStart Labs engagement. Michael Fawler shared internal data suggesting TAM estimates for the enterprise segment should be revised upward. Agreement was reached on a bi-weekly cadence for project syncs.</p><h3>Key Discussions</h3><ul><li><strong>Competitive Landscape:</strong> Reviewed current positioning against enterprise competitors; current TAM estimates flagged as conservative by Michael.</li><li><strong>Brand Refresh Timeline:</strong> Agreed to prioritize brand refresh deliverables before the Q2 campaign launch to avoid downstream delays.</li><li><strong>Contract Review:</strong> Legal team raised amendments around the termination clause; revised version expected by end of week.</li></ul><h3>Decisions Made</h3><ul><li>TAM estimates for enterprise segment to be revised <strong>15–20% higher</strong> based on TechStart Labs internal data.</li><li>Bi-weekly syncs confirmed as the standard cadence going forward.</li><li>$85K proposal approved; moving to contract finalization stage.</li></ul>',
+      nextSteps: [
+        'Chris Taylor (Sales): Revise TAM estimates for enterprise segment and share updated model.',
+        'Michael Fawler (TechStart Labs): Share internal data supporting the 15–20% adjustment.',
+        'Chris Taylor (Sales): Schedule follow-up call to align on legal contract review timeline.'
+      ],
       participants: [
         { name: 'Chris Taylor', email: 'chris.taylor@hellobonsai.com', img: 'https://ui-avatars.com/api/?name=CT&size=250&background=4c525a&color=ffffff&format=png', role: 'Host' },
         { name: 'Michael Fawler', email: 'michael.fawler@techstart.co', img: 'https://ui-avatars.com/api/?name=MF&size=250&background=4c525a&color=ffffff&format=png', role: '' }
@@ -3600,7 +3767,12 @@
       link: 'https://meet.google.com/pde-ent-jan13',
       recording: 'https://zoom.us/rec/share/product-demo-enterprise-jan13',
       noteTitle: 'Zoom AI: Product Demo – Enterprise Plan',
-      noteBody: '<p>Chris Taylor walked Michael Fawler through Bonsai\'s enterprise plan, covering automation workflows, CRM integrations, and custom reporting. Michael expressed strong interest in the contract workflow automation and asked about API access for their internal tooling. Pricing was discussed informally; formal proposal to follow.</p><h3>Key Demonstrations</h3><ul><li><strong>Automation Workflows:</strong> Showed trigger-based contract and invoice automation; Michael flagged this as a top priority for their team.</li><li><strong>CRM Integrations:</strong> Live demo of HubSpot and Salesforce sync; Michael confirmed they currently use HubSpot.</li><li><strong>Custom Reporting:</strong> Walked through revenue and time-tracking dashboards; Michael requested a client-facing version for their CFO.</li></ul><h3>Next Steps</h3><ul><li>Chris to send formal enterprise proposal by <strong>Jan 16</strong>.</li><li>Michael to loop in their VP of Operations for a follow-up technical call.</li><li>API documentation to be shared separately by the integrations team.</li></ul>',
+      noteBody: '<p>Chris Taylor walked Michael Fawler through Bonsai\'s enterprise plan, covering automation workflows, CRM integrations, and custom reporting. Michael expressed strong interest in the contract workflow automation and asked about API access for their internal tooling. Pricing was discussed informally; formal proposal to follow.</p><h3>Key Demonstrations</h3><ul><li><strong>Automation Workflows:</strong> Showed trigger-based contract and invoice automation; Michael flagged this as a top priority for their team.</li><li><strong>CRM Integrations:</strong> Live demo of HubSpot and Salesforce sync; Michael confirmed they currently use HubSpot.</li><li><strong>Custom Reporting:</strong> Walked through revenue and time-tracking dashboards; Michael requested a client-facing version for their CFO.</li></ul>',
+      nextSteps: [
+        'Chris Taylor (Sales): Send formal proposal documentation and contract draft by EOD.',
+        'Legal team (TechStart Labs): Complete contract review within one week.',
+        'Chris Taylor (Sales): Schedule onboarding kickoff call for mid-January once contract is signed.'
+      ],
       participants: [
         { name: 'Chris Taylor', email: 'chris.taylor@hellobonsai.com', img: 'https://ui-avatars.com/api/?name=CT&size=250&background=4c525a&color=ffffff&format=png', role: 'Host' },
         { name: 'Michael Fawler', email: 'michael.fawler@techstart.co', img: 'https://ui-avatars.com/api/?name=MF&size=250&background=4c525a&color=ffffff&format=png', role: '' }
@@ -4145,6 +4317,9 @@
   });
 
   document.addEventListener('click', function(e) {
+    if (!e.target.closest('#ndp-create-fab')) {
+      document.getElementById('ndp-create-menu').classList.remove('open');
+    }
     if (!e.target.closest('.add-btn-wrap')) {
       document.getElementById('add-activity-menu').classList.remove('open');
     }
@@ -4436,6 +4611,23 @@
          data-placeholder="Start typing, or press / to add a block…"></div>
   </div>
 
+  <!-- Floating Create AI button -->
+  <div class="ndp-create-fab" id="ndp-create-fab">
+    <div class="ndp-create-menu" id="ndp-create-menu">
+      <a class="ndp-create-menu-item" href="#" onclick="return false;">Create tasks</a>
+      <a class="ndp-create-menu-item" href="#" onclick="return false;">Create deal</a>
+      <a class="ndp-create-menu-item" href="#" onclick="return false;">Create proposal</a>
+      <a class="ndp-create-menu-item" href="#" onclick="return false;">Create agreements</a>
+      <a class="ndp-create-menu-item" href="#" onclick="return false;">Create project</a>
+    </div>
+    <button class="ndp-create-btn" onclick="toggleNdpCreateMenu(event)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#22AD01" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 13 7.5 16.5 9.5C19.5 11.2 23 12 23 12C23 12 19.5 12.8 16.5 14.5C13 16.5 12 22 12 22C12 22 11 16.5 7.5 14.5C4.5 12.8 1 12 1 12C1 12 4.5 11.2 7.5 9.5C11 7.5 12 2 12 2Z"/>
+      </svg>
+      Create
+    </button>
+  </div>
+
   <!-- Footer -->
   <div class="ndp-footer">
     <span class="ndp-footer-meta" id="ndp-footer-meta">Edited just now</span>
@@ -4593,6 +4785,8 @@
 
 function openNoteFromItem(noteItem, context) {
   closeAllNoteMenus();
+  _ndpCurrentSteps = null;
+  _ndpNsTaskState = {};
 
   // Extract content
   var noteText = noteItem.querySelector('.note-text, .activity-text');
@@ -4604,13 +4798,16 @@ function openNoteFromItem(noteItem, context) {
     var meetingRef = zoomCard.querySelector('.zoom-ai-note-meeting-ref');
     var noteBody   = zoomCard.querySelector('.zoom-ai-note-body');
     bodyHTML = (noteBody ? noteBody.innerHTML : zoomCard.innerHTML);
-    // If there's a meeting ref, wire up the meeting slot
+    // Strip zoom-ai-checklist Next Steps from body (shown in interactive section instead)
+    bodyHTML = bodyHTML.replace(/<h4[^>]*>Next Steps<\/h4>\s*<ul[^>]*>[\s\S]*?<\/ul>/i, '');
+    // If there's a meeting ref, wire up the meeting slot and look up next steps
     if (meetingRef) {
       var strong = meetingRef.querySelector('strong');
       var meetTitle = strong ? strong.textContent : '';
       var metaEl = noteItem.querySelector('.activity-meta');
       var dateStr = metaEl ? metaEl.textContent.split('·').pop().trim() : '';
       _ndpPendingMeeting = meetTitle ? { title: meetTitle, date: dateStr } : null;
+      _ndpCurrentSteps = _ndpNextStepsLookup[meetTitle] || null;
     }
   }
 
@@ -4624,8 +4821,18 @@ function openNoteFromItem(noteItem, context) {
   document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
   document.getElementById('ndp-bc-title').textContent = 'Note';
 
-  // Set title (empty — these notes don't have titles)
-  document.getElementById('ndp-title').textContent = '';
+  // Set title from meeting noteTitle when opened from a Zoom note card
+  var resolvedTitle = '';
+  if (typeof meetTitle !== 'undefined' && meetTitle) {
+    for (var mId in pastMeetingData) {
+      if (pastMeetingData[mId].title === meetTitle) {
+        resolvedTitle = (pastMeetingData[mId].noteTitle || meetTitle).replace(/^Zoom AI:\s*/i, '');
+        break;
+      }
+    }
+    if (!resolvedTitle) resolvedTitle = meetTitle;
+  }
+  document.getElementById('ndp-title').textContent = resolvedTitle;
 
   // Set body
   document.getElementById('ndp-body').innerHTML = bodyHTML;
@@ -4652,11 +4859,13 @@ function openNoteByMeeting(id) {
   var m = pastMeetingData[id];
   if (!m || !m.noteTitle) return;
   closeMeetingOverlay();
+  _ndpCurrentSteps = m.nextSteps || null;
+  _ndpNsTaskState = {};
   document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
   document.getElementById('ndp-bc-title').textContent = 'Note';
-  document.getElementById('ndp-title').textContent = m.noteTitle;
+  document.getElementById('ndp-title').textContent = m.noteTitle.replace(/^Zoom AI:\s*/i, '');
   document.getElementById('ndp-body').innerHTML = m.noteBody || '';
-  document.getElementById('ndp-footer-meta').textContent = 'Zoom AI Companion';
+  document.getElementById('ndp-footer-meta').textContent = 'Zoom';
   _ndpSetDefaultRecords();
   _ndpPendingMeeting = { title: m.title, date: m.time };
   _ndpOpenPanel();
@@ -4664,6 +4873,8 @@ function openNoteByMeeting(id) {
 
 function openNewNote(context) {
   closeAllNoteMenus();
+  _ndpCurrentSteps = null;
+  _ndpNsTaskState = {};
   document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
   document.getElementById('ndp-bc-title').textContent = 'New note';
   document.getElementById('ndp-title').textContent = '';
@@ -4722,11 +4933,20 @@ function _ndpOpenPanel() {
   document.querySelectorAll('#ndp-body .ndp-todo-cb').forEach(function(cb) {
     cb.addEventListener('click', function() { cb.classList.toggle('checked'); });
   });
+  // Render interactive Next Steps
+  renderNdpNextSteps(_ndpCurrentSteps);
+}
+
+function toggleNdpCreateMenu(e) {
+  e.stopPropagation();
+  document.getElementById('ndp-create-menu').classList.toggle('open');
 }
 
 function closeNotePanel() {
   document.getElementById('note-detail-panel').classList.remove('open');
   document.getElementById('note-panel-overlay').classList.remove('open');
+  document.getElementById('task-modal-overlay').classList.add('hidden');
+  document.getElementById('ndp-create-menu').classList.remove('open');
   ndpCloseSlashMenu(); ndpCloseFormatToolbar(); ndpCloseMeetingPicker(); ndpCloseRecordPicker();
 }
 
@@ -5009,6 +5229,330 @@ document.addEventListener('mousedown', function(e) {
   if (!e.target.closest('#ndp-record-picker') && !e.target.closest('.ndp-add-chip')) ndpCloseRecordPicker();
 });
 </script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   NEXT STEPS — INTERACTIVE (NOTE DETAIL PANEL)
+═══════════════════════════════════════════════ */
+
+var _ndpCurrentSteps = null;
+var _ndpNsTaskState = {};
+
+var _ndpNextStepsLookup = {
+  'Strategic Planning Offsite': [
+    'Chris Taylor (Sales): Revise TAM estimates for enterprise segment and share updated model.',
+    'Michael Fawler (TechStart Labs): Share internal data supporting the 15\u201320% adjustment.',
+    'Chris Taylor (Sales): Schedule follow-up call to align on legal contract review timeline.'
+  ],
+  'Product Demo \u2013 Enterprise Plan': [
+    'Chris Taylor (Sales): Send formal proposal documentation and contract draft by EOD.',
+    'Legal team (TechStart Labs): Complete contract review within one week.',
+    'Chris Taylor (Sales): Schedule onboarding kickoff call for mid-January once contract is signed.'
+  ]
+};
+
+function renderNdpNextSteps(steps) {
+  var body = document.getElementById('ndp-body');
+  if (!body) return;
+  // Remove any previously injected section
+  var existing = body.querySelector('.ndp-ns-section');
+  if (existing) existing.remove();
+  if (!steps || !steps.length) return;
+
+  var section = document.createElement('div');
+  section.className = 'ndp-ns-section';
+  var html = '<h3>Next Steps</h3><ul>';
+  steps.forEach(function(rawText, idx) {
+    var state = _ndpNsTaskState[idx];
+    if (state && state.taskId) {
+      html += '<li class="ndp-ns-done">' + rawText
+        + ' <a class="mdp-task-chip" href="#" contenteditable="false"'
+        + ' onmousedown="event.preventDefault();" onclick="return false;">TSK-' + state.taskId + '</a></li>';
+    } else {
+      html += '<li'
+        + ' onmousedown="event.preventDefault(); event.stopPropagation();"'
+        + ' onclick="openNdpTaskModal(' + idx + ');">'
+        + rawText + '</li>';
+    }
+  });
+  html += '</ul>';
+  section.innerHTML = html;
+  body.appendChild(section);
+}
+
+/* ── Task modal ── */
+var _ndpTaskStepIdx = null;
+
+var _projects = [
+  { name: 'Bugs \u2013 Week 27', workspace: 'Bonsai Product Development', color: '#8B4513', initials: 'B' },
+  { name: 'Bugs \u2013 Week 30', workspace: 'Bonsai Product Development', color: '#8B4513', initials: 'B' },
+  { name: 'Security Items', workspace: 'Bonsai Product Development', color: '#2c2c2c', initials: 'S' },
+  { name: 'Website Redesign', workspace: 'Acme Corp', color: '#1a6b3c', initials: 'W' },
+  { name: 'Q1 Roadmap', workspace: 'Bonsai Product Development', color: '#1a4a8b', initials: 'Q' },
+  { name: 'Onboarding Flow', workspace: 'Bonsai Product Development', color: '#7b1fa2', initials: 'O' }
+];
+
+function renderProjectList(query) {
+  var list = document.getElementById('task-project-list');
+  var filtered = query ? _projects.filter(function(p) {
+    return p.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+        || p.workspace.toLowerCase().indexOf(query.toLowerCase()) > -1;
+  }) : _projects;
+  list.innerHTML = filtered.map(function(p) {
+    return '<div class="task-project-item" onclick="selectProject(' + JSON.stringify(p).replace(/"/g, '&quot;') + ')">'
+      + '<div class="task-project-badge" style="background:' + p.color + ';width:20px;height:20px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">' + p.initials + '</div>'
+      + '<div class="task-project-item-info"><div class="task-project-item-name">' + p.name + '</div><div class="task-project-item-workspace">' + p.workspace + '</div></div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleProjectDropdown(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('task-project-dropdown');
+  var isOpen = dd.classList.toggle('open');
+  document.getElementById('task-project-field').classList.toggle('task-field-active', isOpen);
+  if (isOpen) {
+    document.getElementById('task-project-search-input').value = '';
+    renderProjectList('');
+    setTimeout(function() { document.getElementById('task-project-search-input').focus(); }, 50);
+  }
+}
+
+function filterProjects(q) { renderProjectList(q); }
+
+function selectProject(p) {
+  var badge = document.getElementById('task-project-badge');
+  badge.textContent = p.initials;
+  badge.style.cssText = 'background:' + p.color + ';width:20px;height:20px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;';
+  document.getElementById('task-project-icon').style.display = 'none';
+  var nameEl = document.getElementById('task-project-name');
+  nameEl.textContent = p.name;
+  nameEl.classList.remove('task-field-placeholder');
+  document.getElementById('task-project-dropdown').classList.remove('open');
+  document.getElementById('task-project-field').classList.remove('task-field-active');
+}
+
+function toggleAdvancedFields() {
+  var fields = document.getElementById('task-advanced-fields');
+  var chevron = document.getElementById('task-advanced-chevron');
+  var label = document.getElementById('task-advanced-label');
+  var isOpen = fields.classList.toggle('task-advanced-fields--open');
+  chevron.classList.toggle('task-advanced-toggle-chevron--open', isOpen);
+  label.textContent = isOpen ? 'Hide Advanced Fields' : 'Show Advanced Fields';
+}
+
+document.addEventListener('click', function(e) {
+  var block = document.getElementById('task-project-block');
+  if (block && !block.contains(e.target)) {
+    var dd = document.getElementById('task-project-dropdown');
+    if (dd) dd.classList.remove('open');
+    var pf = document.getElementById('task-project-field');
+    if (pf) pf.classList.remove('task-field-active');
+  }
+});
+
+function openNdpTaskModal(stepIdx) {
+  if (!_ndpCurrentSteps) return;
+  _ndpTaskStepIdx = stepIdx;
+  var rawText = _ndpCurrentSteps[stepIdx] || '';
+  // Strip "Name (Team): " prefix → task title
+  var colonIdx = rawText.indexOf(': ');
+  var strippedText = (colonIdx > 0 && colonIdx < 55) ? rawText.substring(colonIdx + 2) : rawText;
+  document.getElementById('task-name-input').value = strippedText;
+  // Parse assignee name from "Name (Team): ..."
+  var parenIdx = rawText.indexOf('(');
+  var assigneeName = (parenIdx > 0 && parenIdx < colonIdx)
+    ? rawText.substring(0, parenIdx).trim()
+    : (colonIdx > 0 && colonIdx < 55 ? rawText.substring(0, colonIdx).trim() : '');
+  document.getElementById('task-assignee-name').textContent = assigneeName || 'Add assignee';
+  document.getElementById('task-assignee-avatar').style.display = 'none';
+  // Reset project
+  document.getElementById('task-project-name').textContent = 'Add project';
+  document.getElementById('task-project-name').classList.add('task-field-placeholder');
+  document.getElementById('task-project-badge').style.display = 'none';
+  document.getElementById('task-project-icon').style.display = '';
+  document.getElementById('task-project-field').classList.remove('task-field-active');
+  document.getElementById('task-project-dropdown').classList.remove('open');
+  renderProjectList('');
+  // Reset advanced fields
+  document.getElementById('task-advanced-fields').classList.remove('task-advanced-fields--open');
+  document.getElementById('task-advanced-chevron').classList.remove('task-advanced-toggle-chevron--open');
+  document.getElementById('task-advanced-label').textContent = 'Show Advanced Fields';
+  document.getElementById('task-modal-overlay').classList.remove('hidden');
+  setTimeout(function() {
+    var t = document.getElementById('task-name-input');
+    t.focus(); t.select();
+  }, 50);
+}
+
+function closeNdpTaskModal(e) {
+  if (e && e.target !== document.getElementById('task-modal-overlay')) return;
+  document.getElementById('task-modal-overlay').classList.add('hidden');
+  _ndpTaskStepIdx = null;
+}
+
+function submitNdpTask() {
+  var title = document.getElementById('task-name-input').value.trim();
+  if (!title) return;
+  var taskId = String(Math.floor(1000 + Math.random() * 9000));
+  if (_ndpTaskStepIdx !== null) {
+    _ndpNsTaskState[_ndpTaskStepIdx] = { taskId: taskId };
+    renderNdpNextSteps(_ndpCurrentSteps);
+  }
+  document.getElementById('task-modal-overlay').classList.add('hidden');
+  _ndpTaskStepIdx = null;
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#22AD01;color:white;padding:10px 16px;border-radius:7px;font-size:13px;font-weight:500;z-index:99999;box-shadow:0 4px 16px rgba(0,0,0,0.2);';
+  toast.textContent = 'Task TSK-' + taskId + ' created';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.transition = 'opacity 0.3s'; toast.style.opacity = '0';
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 2500);
+}
+</script>
+
+<div class="modal-overlay hidden" id="task-modal-overlay" onclick="closeNdpTaskModal(event)">
+  <div class="modal-wrap">
+    <button class="modal-close-btn" onclick="closeNdpTaskModal()">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="1" x2="10" y2="10"/><line x1="10" y1="1" x2="1" y2="10"/></svg>
+    </button>
+    <div class="modal-dialog task-modal-dialog">
+      <div class="task-modal-header">
+        <span class="task-modal-title">New Task</span>
+      </div>
+      <div class="task-modal-body" id="task-tab-details">
+        <div class="task-title-row">
+          <input type="text" class="task-name-input" id="task-name-input" placeholder="Task name" autocomplete="off" />
+          <button class="task-status-btn">
+            <span class="task-status-dot"></span>
+            <span>Backlog</span>
+            <svg class="task-status-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg>
+          </button>
+        </div>
+        <div class="task-fields-grid">
+          <div class="task-field-block task-field-project" id="task-project-block">
+            <div class="task-field-label">Project</div>
+            <div class="task-field-value task-field-clickable" id="task-project-field" onclick="toggleProjectDropdown(event)">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="task-project-icon"><path d="M1 4.5h11v6.5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4.5z"/><path d="M1 4.5V3.5a1 1 0 0 1 1-1h3.5l1 1.5H12a1 1 0 0 1 0 0"/></svg>
+              <div class="task-project-badge" id="task-project-badge" style="display:none;"></div>
+              <span class="task-field-value-text task-field-placeholder" id="task-project-name">Add project</span>
+            </div>
+            <div class="task-project-dropdown" id="task-project-dropdown">
+              <div class="task-project-search">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="5" cy="5" r="4"/><line x1="8.5" y1="8.5" x2="11" y2="11"/></svg>
+                <input type="text" placeholder="Search projects…" id="task-project-search-input" oninput="filterProjects(this.value)" />
+              </div>
+              <div class="task-project-list" id="task-project-list"></div>
+            </div>
+          </div>
+          <div class="task-field-block">
+            <div class="task-field-label">Assignee</div>
+            <div class="task-field-value task-field-assignee" id="task-assignee-field">
+              <div class="task-assignee-avatar" id="task-assignee-avatar" style="display:none;"></div>
+              <span class="task-field-value-text" id="task-assignee-name">Add assignee</span>
+            </div>
+          </div>
+          <div class="task-field-block">
+            <div class="task-field-label">Dates</div>
+            <div class="task-field-value task-field-clickable" onclick="this.classList.toggle('task-field-active')">
+              <svg width="13" height="14" viewBox="0 0 13 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="0.7" y="1.7" width="11.6" height="11.3" rx="1.5"/><line x1="0.7" y1="5.2" x2="12.3" y2="5.2"/><line x1="4" y1="0.5" x2="4" y2="3"/><line x1="9" y1="0.5" x2="9" y2="3"/></svg>
+              <span class="task-field-value-text task-field-placeholder" style="flex-shrink:0;">Start</span>
+              <span style="color:var(--text-lighter);flex-shrink:0;">→</span>
+              <span class="task-field-value-text task-field-placeholder" style="flex-shrink:0;">End</span>
+            </div>
+          </div>
+          <div class="task-field-block">
+            <div class="task-field-label">Task List</div>
+            <div class="task-field-value task-field-clickable">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="1" y1="3" x2="12" y2="3"/><line x1="1" y1="6.5" x2="12" y2="6.5"/><line x1="1" y1="10" x2="7" y2="10"/></svg>
+              <span class="task-field-value-text task-field-placeholder">Add to task list</span>
+            </div>
+          </div>
+          <div class="task-field-block">
+            <div class="task-field-label">Priority</div>
+            <div class="task-field-value task-field-clickable">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 1v11"/><path d="M2 2h8.5l-2.5 3 2.5 3H2"/></svg>
+              <span class="task-field-value-text task-field-placeholder">None</span>
+            </div>
+          </div>
+          <div class="task-field-block">
+            <div class="task-field-label">Estimate</div>
+            <div class="task-field-value task-field-clickable">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="5.8"/><path d="M6.5 3.5v3l2 1.5"/></svg>
+              <span class="task-field-value-text task-field-placeholder">No estimate</span>
+            </div>
+          </div>
+        </div>
+        <div class="task-field-group">
+          <textarea class="task-desc-input" id="task-desc-input" placeholder="Add a description…" rows="3"></textarea>
+        </div>
+        <button class="task-advanced-toggle" id="task-advanced-toggle" onclick="toggleAdvancedFields()">
+          <span id="task-advanced-label">Show Advanced Fields</span>
+          <svg class="task-advanced-toggle-chevron" id="task-advanced-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>
+        </button>
+        <div class="task-advanced-fields" id="task-advanced-fields">
+          <div class="task-fields-grid">
+            <div class="task-field-block">
+              <div class="task-field-label">Frequency</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6.5A5 5 0 0 1 11 3.5"/><path d="M11.5 6.5A5 5 0 0 1 2 9.5"/><path d="M9 1.5l2 2-2 2"/><path d="M4 7.5l-2 2 2 2"/></svg>
+                <span class="task-field-value-text task-field-placeholder">Does not repeat</span>
+              </div>
+            </div>
+            <div class="task-field-block">
+              <div class="task-field-label">Time Tracked</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="7" r="5"/><path d="M6.5 4.5v2.5l1.5 1"/><path d="M5 0.5h3"/><path d="M9.5 1.5l1 1"/></svg>
+                <span class="task-field-value-text task-field-placeholder">Add hours</span>
+              </div>
+            </div>
+            <div class="task-field-block">
+              <div class="task-field-label">Billing</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="5.8"/><path d="M6.5 3v1M6.5 9v1M4.5 7.5a2 2 0 0 0 4 0c0-1.1-.9-1.5-2-2s-2-.9-2-2a2 2 0 0 1 4 0"/></svg>
+                <span class="task-field-value-text">Billable</span>
+              </div>
+            </div>
+            <div class="task-field-block">
+              <div class="task-field-label">Service</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1" y="3" width="11" height="8" rx="1.2"/><path d="M4.5 3V2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1"/></svg>
+                <span class="task-field-value-text task-field-placeholder">Add service</span>
+              </div>
+            </div>
+            <div class="task-field-block">
+              <div class="task-field-label">Tags</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h5l5.5 5.5a1.5 1.5 0 0 1 0 2.1L8.6 11.5a1.5 1.5 0 0 1-2.1 0L1 6V1z"/><circle cx="3.5" cy="3.5" r="1"/></svg>
+                <span class="task-field-value-text task-field-placeholder">Add tag</span>
+              </div>
+            </div>
+            <div class="task-field-block">
+              <div class="task-field-label">Deal</div>
+              <div class="task-field-value task-field-clickable">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1" y="3.5" width="11" height="8" rx="1.2"/><path d="M4.5 3.5V2.5a2 2 0 0 1 4 0v1"/></svg>
+                <span class="task-field-value-text task-field-placeholder">Add deal</span>
+              </div>
+            </div>
+          </div>
+          <div class="task-full-row">
+            <div class="task-field-label">Files</div>
+            <a href="#" class="task-add-link" onclick="return false;">+ Add File</a>
+          </div>
+          <div class="task-full-row">
+            <div class="task-field-label">Subtasks</div>
+            <a href="#" class="task-add-link" onclick="return false;">+ Add Subtask</a>
+          </div>
+        </div>
+      </div>
+      <div class="task-modal-footer">
+        <button class="task-modal-cancel" onclick="closeNdpTaskModal()">Cancel</button>
+        <button class="task-modal-create" onclick="submitNdpTask()">Create Task</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
