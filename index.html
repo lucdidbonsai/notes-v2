@@ -17,6 +17,7 @@
       --sidenav-item-hover-bg: var(--bg-hover-subtle, #fcfcfc);
       --sidenav-item-selected-bg: var(--bg-grey-f1, #f1f1f1);
     }
+    .sidenav-features-item-icon.projects { top: 8px; left: 8px; width: 16px; }
     /* meetings icon has no rule in application.css — add it here */
     .sidenav-features-item-icon.meetings {
       top: 10px;
@@ -61,12 +62,6 @@
       display: flex;
       flex-direction: column;
     }
-    #sidebar-panel-details { flex: 1; }
-    #sidebar-panel-comments {
-      flex: 1;
-      min-height: 0;
-    }
-
     /* ── Tab section title row ── */
     .tab-section-title-row {
       display: flex;
@@ -446,191 +441,6 @@
     .email-access-user-row { display: flex; align-items: center; gap: 10px; }
     .email-access-user-name { flex: 1; font-size: 13px; font-weight: 500; }
     .email-access-user-status { font-size: 12px; color: var(--text-muted); }
-
-    /* ── Sidebar tab switcher ── */
-    .sidebar-tab-bar {
-      display: flex;
-      border-bottom: 1px solid var(--border-content);
-      padding: 0 20px;
-      flex-shrink: 0;
-      background: var(--bg-content);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .sidebar-tab {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      padding: 12px 8px 11px;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      margin-bottom: -1px;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: color 0.1s;
-      white-space: nowrap;
-    }
-    .sidebar-tab:hover { color: var(--text-default); }
-    .sidebar-tab.active {
-      color: var(--text-default);
-      border-bottom-color: #22AD01;
-    }
-    .sidebar-tab-count {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--bg-grey-f1);
-      border-radius: 10px;
-      padding: 1px 6px;
-    }
-    .sidebar-tab.active .sidebar-tab-count {
-      color: var(--text-default);
-      background: var(--bg-grey-ed, #ededed);
-    }
-
-    /* ── Comments panel ── */
-    .sidebar-comments-panel {
-      display: flex;
-      flex-direction: column;
-      height: calc(100% - 39px); /* 39px = tab bar height */
-    }
-    .sidebar-comments-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 4px 0 0;
-    }
-    .sidebar-comment-item {
-      display: flex;
-      gap: 10px;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border-content);
-    }
-    .sidebar-comment-item:last-child { border-bottom: none; }
-    .sidebar-comment-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .sidebar-comment-body { flex: 1; min-width: 0; }
-    .sidebar-comment-meta {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-    .sidebar-comment-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-default);
-      white-space: nowrap;
-    }
-    .sidebar-comment-time {
-      font-size: 11px;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-    .sidebar-comment-text {
-      font-size: 13px;
-      color: var(--text-default);
-      line-height: 1.5;
-    }
-    .sidebar-comment-mention {
-      color: #5b6af5;
-      font-weight: 500;
-    }
-
-    /* ── Comment composer ── */
-    .sidebar-comment-composer {
-      border-top: 1px solid var(--border-content);
-      padding: 12px 16px 14px;
-      flex-shrink: 0;
-    }
-    .sidebar-comment-composer-inner {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-    .sidebar-comment-input-wrap {
-      flex: 1;
-      border: 1px solid var(--border-content);
-      border-radius: 7px;
-      overflow: hidden;
-      transition: border-color 0.15s;
-    }
-    .sidebar-comment-input-wrap:focus-within {
-      border-color: #22AD01;
-      box-shadow: 0 0 0 2.5px rgba(34,173,1,0.1);
-    }
-    .sidebar-comment-input {
-      width: 100%;
-      border: none;
-      outline: none;
-      resize: none;
-      font-size: 13px;
-      color: var(--text-default);
-      background: transparent;
-      padding: 8px 10px 6px;
-      line-height: 1.45;
-      font-family: inherit;
-      display: block;
-      min-height: 34px;
-    }
-    .sidebar-comment-input::placeholder { color: var(--text-lighter); }
-    .sidebar-comment-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4px 8px 6px;
-    }
-    .sidebar-comment-tool-btns {
-      display: flex;
-      gap: 2px;
-    }
-    .sidebar-comment-tool-btn {
-      width: 24px;
-      height: 24px;
-      border: none;
-      background: none;
-      border-radius: 4px;
-      cursor: pointer;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      transition: background 0.1s, color 0.1s;
-    }
-    .sidebar-comment-tool-btn:hover {
-      background: var(--bg-grey-f5);
-      color: var(--text-default);
-    }
-    .sidebar-comment-submit {
-      font-size: 12px;
-      font-weight: 600;
-      color: #fff;
-      background: #22AD01;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 10px;
-      cursor: pointer;
-      transition: background 0.12s;
-      line-height: 1;
-      height: 24px;
-      display: flex;
-      align-items: center;
-    }
-    .sidebar-comment-submit:hover { background: #1e9c01; }
 
     /* ── Right sidebar ── */
     .sidebar-section {
@@ -1965,6 +1775,8 @@
       font-size: 11px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.1s;
     }
     .ndp-btn[data-tip]:hover::after { opacity: 1; }
+    .ndp-author-av[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-default); color: #fff; font-size: 11px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+    .ndp-author-av[data-tip]:hover::after { opacity: 1; }
     .ndp-associations { padding: 14px 28px 0; flex-shrink: 0; }
     .ndp-records-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 28px; }
     .ndp-chip {
@@ -2016,7 +1828,8 @@
       width: 100%; padding: 14px 0 8px; line-height: 1.25;
       font-family: inherit; caret-color: #22AD01;
     }
-    .ndp-title:empty::before { content: 'Untitled note'; color: var(--text-lighter); pointer-events: none; }
+    .ndp-title:empty::before { content: attr(data-placeholder); color: var(--text-lighter); pointer-events: none; display: block; }
+    #ndp-body:empty::before { display: block; }
     .ndp-body {
       flex: 1; font-size: 14px; color: var(--text-default);
       line-height: 1.75; outline: none; min-height: 320px;
@@ -2320,7 +2133,7 @@
             <svg class="sidenav-features-item-icon notifications" width="20" height="20" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.5 1.75C10.2198 1.75 6.75 5.21979 6.75 9.5V12.9142C6.75 13.5773 6.48661 14.2132 6.01777 14.682L4.43934 16.2607C3.48214 17.2178 4.16066 18.8571 5.5 18.8571H23.5C24.8393 18.8571 25.5179 17.2178 24.5607 16.2607L22.9822 14.682C22.5134 14.2132 22.25 13.5773 22.25 12.9142V9.5C22.25 5.21979 18.7802 1.75 14.5 1.75ZM9.25 9.5C9.25 6.6005 11.6005 4.25 14.5 4.25C17.3995 4.25 19.75 6.6005 19.75 9.5V12.9142C19.75 14.2403 20.2768 15.5123 21.2145 16.4499L21.2678 16.5035C21.1936 16.4393 21.1357 16.3571 21.1005 16.2607H7.89949C7.86427 16.3571 7.8064 16.4393 7.73223 16.5035L7.78553 16.4499C8.72322 15.5123 9.25 14.2403 9.25 12.9142V9.5Z" fill="currentColor"/><path d="M11.25 20.75C11.25 22.5449 12.7051 24 14.5 24C16.2949 24 17.75 22.5449 17.75 20.75H11.25Z" fill="currentColor"/></svg>
             <span class="sidenav-features-item-label">Notifications</span>
           </a>
-          <a class="sidenav-features-item" href="#">
+          <a class="sidenav-features-item" href="client.html">
             <div class="sidenav-features-item-bg"></div>
             <svg class="sidenav-features-item-icon company" width="20" height="20" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 12.088C6.05225 12.088 6.49995 12.5357 6.5 13.088V15.088C6.5 15.6403 6.05228 16.088 5.5 16.088C4.94772 16.088 4.5 15.6403 4.5 15.088V13.088C4.50005 12.5357 4.94775 12.088 5.5 12.088Z" fill="#22AD01"/><path d="M9.5 12.088C10.0523 12.088 10.5 12.5357 10.5 13.088V15.088C10.5 15.6403 10.0523 16.088 9.5 16.088C8.94772 16.088 8.5 15.6403 8.5 15.088V13.088C8.50005 12.5357 8.94775 12.088 9.5 12.088Z" fill="#22AD01"/><path d="M5.5 6.08797C6.05225 6.08797 6.49995 6.53573 6.5 7.08797V9.08797C6.5 9.64025 6.05228 10.088 5.5 10.088C4.94772 10.088 4.5 9.64025 4.5 9.08797V7.08797C4.50005 6.53573 4.94775 6.08797 5.5 6.08797Z" fill="#22AD01"/><path d="M9.5 6.08797C10.0523 6.08797 10.5 6.53573 10.5 7.08797V9.08797C10.5 9.64025 10.0523 10.088 9.5 10.088C8.94772 10.088 8.5 9.64025 8.5 9.08797V7.08797C8.50005 6.53573 8.94775 6.08797 9.5 6.08797Z" fill="#22AD01"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.95996 0.139729C12.5014 -0.54448 14.9997 1.37023 15 4.00203V7.1368L16.7842 7.49422C18.6537 7.86814 19.9998 9.50961 20 11.4161V16.4688C19.9999 18.6779 18.2091 20.4688 16 20.4688H13.1367C12.5184 20.8604 11.786 21.088 11 21.088H4C1.79086 21.088 4.83192e-08 19.2971 0 17.088V5.8868C0.000177254 4.07835 1.21368 2.49469 2.95996 2.02449L9.95996 0.139729ZM13 4.00203C12.9997 2.6864 11.751 1.72957 10.4805 2.07137L3.48047 3.95614C2.60737 4.1912 2.00018 4.98264 2 5.8868V17.088C2 18.1925 2.89543 19.088 4 19.088H11C12.1046 19.088 13 18.1925 13 17.088V4.00203ZM15 17.088C15 17.5733 14.9132 18.0384 14.7549 18.4688H16C17.1045 18.4688 17.9999 17.5733 18 16.4688V11.4161C17.9998 10.4631 17.3271 9.64223 16.3926 9.45516L15 9.17586V17.088Z" fill="#22AD01"/></svg>
             <span class="sidenav-features-item-label">Clients</span>
@@ -2344,20 +2157,15 @@
             <svg class="sidenav-features-item-icon deals" width="20" height="20" viewBox="0 0 23 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.40835 0H16.5053C18.0256 0 19.4085 0.880056 20.0523 2.25729L22.0028 6.42995C22.9123 8.3756 22.9123 10.6244 22.0028 12.57L20.0523 16.7427C19.4085 18.1199 18.0256 19 16.5053 19H4.40835C2.74724 19 0.782501 18.1324 0.151362 16.219C-0.159865 15.2755 0.0914611 14.4203 0.177522 14.1274L1.29587 10.3166C1.45232 9.78342 1.45232 9.21656 1.29587 8.68342L0.177522 4.87256C0.0914605 4.5797 -0.159866 3.72447 0.151365 2.78095C0.782515 0.867566 2.74728 0 4.40835 0ZM4.40835 2.1749H5.64136L7.48734 8.36091C7.70934 9.10482 7.70934 9.89736 7.48734 10.6413L5.64201 16.8251H4.40835C3.34937 16.8251 2.46068 16.2771 2.2168 15.5377C2.13019 15.2752 2.19006 14.9932 2.26791 14.7279L3.38276 10.929C3.65656 9.99599 3.65656 9.00399 3.38276 8.071L2.26791 4.27203C2.19006 4.00674 2.13019 3.72481 2.2168 3.46225C2.46068 2.72292 3.34937 2.1749 4.40835 2.1749ZM9.57143 7.73899L7.91103 2.1749H11.6284L13.5363 8.56821C13.7179 9.17687 13.7179 9.82531 13.5363 10.434L11.6291 16.8251H7.91168L9.57143 11.2632C9.91451 10.1135 9.91451 8.88867 9.57143 7.73899ZM13.8987 16.8251H16.5053C17.1811 16.8251 17.7958 16.4339 18.082 15.8217L20.0326 11.649C20.6692 10.2871 20.6692 8.71292 20.0325 7.35096L18.082 3.1783C17.7958 2.5661 17.1811 2.1749 16.5053 2.1749H13.8981L15.6203 7.94629C15.9231 8.96072 15.9231 10.0415 15.6203 11.0559L13.8987 16.8251Z" fill="#22AD01"/></svg>
             <span class="sidenav-features-item-label">Deals</span>
           </a>
-          <a class="sidenav-features-item" href="#">
+          <a class="sidenav-features-item" href="project.html">
             <div class="sidenav-features-item-bg"></div>
-            <svg class="sidenav-features-item-icon scheduling-icon" width="20" height="20" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.6176 0.75C9.30796 0.75 9.8676 1.30964 9.8676 2V2.85547H18.1489V2C18.1489 1.30964 18.7085 0.75 19.3989 0.75C20.0892 0.75 20.6489 1.30964 20.6489 2V2.89981C22.4255 3.06172 23.9892 3.67105 25.1656 4.79251C26.5671 6.12854 27.2565 8.03638 27.25 10.2981V22.4632C27.25 24.7248 26.5571 26.6343 25.1555 27.9725C23.7628 29.3023 21.8288 29.9165 19.6387 29.9165H8.36128C6.17082 29.9165 4.23508 29.2891 2.84234 27.9392C1.44338 26.5833 0.75 24.6515 0.75 22.3624V10.2962C0.75 8.03264 1.44721 6.12582 2.85107 4.7913C4.02968 3.6709 5.59338 3.06137 7.3676 2.89965V2C7.3676 1.30964 7.92724 0.75 8.6176 0.75ZM7.3676 5.41298C6.14122 5.56181 5.21747 5.99111 4.57352 6.60325C3.77564 7.36172 3.25 8.55025 3.25 10.2962V10.6226H24.75V10.2962L24.75 10.2923C24.7553 8.54543 24.2343 7.35861 23.4406 6.60204C22.8001 5.99144 21.8781 5.56211 20.6489 5.41312V6.38771C20.6489 7.07806 20.0892 7.63771 19.3989 7.63771C18.7085 7.63771 18.1489 7.07806 18.1489 6.38771V5.35547H9.8676V6.38771C9.8676 7.07806 9.30796 7.63771 8.6176 7.63771C7.92724 7.63771 7.3676 7.07806 7.3676 6.38771V5.41298ZM24.75 13.1226H3.25V22.3624C3.25 24.1457 3.77947 25.366 4.58226 26.144C5.39126 26.9281 6.63616 27.4165 8.36128 27.4165H19.6387C21.3765 27.4165 22.6232 26.9338 23.4291 26.1644C24.2262 25.4033 24.75 24.2111 24.75 22.4632V13.1226ZM6.83017 17.0796C6.83017 16.3893 7.38982 15.8296 8.08017 15.8296H8.09253C8.78288 15.8296 9.34253 16.3893 9.34253 17.0796C9.34253 17.77 8.78288 18.3296 8.09253 18.3296H8.08017C7.38982 18.3296 6.83017 17.77 6.83017 17.0796ZM12.752 17.0796C12.752 16.3893 13.3117 15.8296 14.002 15.8296H14.0144C14.7048 15.8296 15.2644 16.3893 15.2644 17.0796C15.2644 17.77 14.7048 18.3296 14.0144 18.3296H14.002C13.3117 18.3296 12.752 17.77 12.752 17.0796ZM18.6739 17.0797C18.6739 16.3894 19.2336 15.8297 19.9239 15.8297H19.9363C20.6266 15.8297 21.1863 16.3894 21.1863 17.0797C21.1863 17.7701 20.6266 18.3297 19.9363 18.3297H19.9239C19.2336 18.3297 18.6739 17.7701 18.6739 17.0797ZM6.83017 22.2613C6.83017 21.5709 7.38982 21.0113 8.08017 21.0113H8.09253C8.78288 21.0113 9.34253 21.5709 9.34253 22.2613C9.34253 22.9516 8.78288 23.5113 8.09253 23.5113H8.08017C7.38982 23.5113 6.83017 22.9516 6.83017 22.2613ZM12.752 22.2613C12.752 21.5709 13.3117 21.0113 14.002 21.0113H14.0144C14.7048 21.0113 15.2644 21.5709 15.2644 22.2613C15.2644 22.9516 14.7048 23.5113 14.0144 23.5113H14.002C13.3117 23.5113 12.752 22.9516 12.752 22.2613ZM18.6739 22.2613C18.6739 21.5709 19.2336 21.0113 19.9239 21.0113H19.9363C20.6266 21.0113 21.1863 21.5709 21.1863 22.2613C21.1863 22.9516 20.6266 23.5113 19.9363 23.5113H19.9239C19.2336 23.5113 18.6739 22.9516 18.6739 22.2613Z" fill="#4C4D5F"/></svg>
-            <span class="sidenav-features-item-label">Scheduling</span>
+            <svg class="sidenav-features-item-icon projects" width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.4 3.25C4.02877 3.25 3.70862 3.37486 3.50317 3.54606C3.30438 3.71173 3.25 3.88228 3.25 4V18C3.25 18.1177 3.30438 18.2883 3.50317 18.4539C3.70862 18.6251 4.02877 18.75 4.4 18.75H23.6C23.9712 18.75 24.2914 18.6251 24.4968 18.4539C24.6956 18.2883 24.75 18.1177 24.75 18V7C24.75 6.88229 24.6956 6.71173 24.4968 6.54606C24.2914 6.37486 23.9712 6.25 23.6 6.25H12.8C12.4203 6.25 12.0611 6.07739 11.8239 5.78087L9.79922 3.25H4.4ZM1.90271 1.62551C2.59744 1.04657 3.49819 0.75 4.4 0.75H10.4C10.7797 0.75 11.1389 0.922612 11.3761 1.21913L13.4008 3.75H23.6C24.5018 3.75 25.4026 4.04657 26.0973 4.62551C26.7987 5.20999 27.25 6.05685 27.25 7V18C27.25 18.9432 26.7987 19.79 26.0973 20.3745C25.4026 20.9534 24.5018 21.25 23.6 21.25H4.4C3.49819 21.25 2.59744 20.9534 1.90271 20.3745C1.20134 19.79 0.75 18.9432 0.75 18V4C0.75 3.05685 1.20134 2.20999 1.90271 1.62551Z" fill="#22AD01"/></svg>
+            <span class="sidenav-features-item-label">Projects</span>
           </a>
           <a class="sidenav-features-item" href="#">
             <div class="sidenav-features-item-bg"></div>
             <svg class="sidenav-features-item-icon tasks" width="20" height="20" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.87565 3.10429C4.28643 1.59075 6.29102 0.75 8.64189 0.75H20.3568C22.7129 0.75 24.7184 1.59021 26.1287 3.10476C27.5296 4.60924 28.25 6.67765 28.25 8.98108V20.0189C28.25 22.3224 27.5296 24.3908 26.1284 25.8953C24.718 27.4099 22.7121 28.25 20.3554 28.25H8.64189C6.28575 28.25 4.28048 27.4098 2.87053 25.8951C1.47 24.3906 0.75 22.3222 0.75 20.0189V8.98108C0.75 6.67626 1.47397 4.60808 2.87565 3.10429ZM4.70441 4.80888C3.80576 5.773 3.25 7.19536 3.25 8.98108V20.0189C3.25 21.8062 3.80365 23.2284 4.70042 24.1917C5.58777 25.145 6.90344 25.75 8.64189 25.75H20.3554C22.0947 25.75 23.4111 25.1449 24.2989 24.1915C25.1961 23.2281 25.75 21.806 25.75 20.0189V8.98108C25.75 7.19397 25.1961 5.77184 24.299 4.80841C23.4113 3.85506 22.0952 3.25 20.3568 3.25H8.64189C6.91033 3.25 5.59398 3.85452 4.70441 4.80888ZM20.193 10.4091C20.6812 10.8972 20.6812 11.6887 20.193 12.1769L13.7795 18.5904C13.2914 19.0784 12.5001 19.0785 12.0119 18.5906L8.8038 15.3838C8.31554 14.8957 8.31538 14.1043 8.80343 13.616C9.29148 13.1278 10.0829 13.1276 10.5712 13.6157L12.8954 15.9389L18.4252 10.4091C18.9134 9.92093 19.7048 9.92093 20.193 10.4091Z" fill="#22AD01"/></svg>
             <span class="sidenav-features-item-label">Tasks</span>
-          </a>
-          <a class="sidenav-features-item" href="#">
-            <div class="sidenav-features-item-bg"></div>
-            <svg class="sidenav-features-item-icon client-portal" width="20" height="20" viewBox="0 0 29 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.8501 17.9996C9.8501 17.3645 10.365 16.8496 11.0001 16.8496H18.0001C18.6352 16.8496 19.1501 17.3645 19.1501 17.9996C19.1501 18.6347 18.6352 19.1496 18.0001 19.1496L11.0001 19.1496C10.365 19.1496 9.8501 18.6347 9.8501 17.9996Z" fill="#22AD01"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6.0001 9.99961C6.0001 8.34276 7.34324 6.99961 9.0001 6.99961H20.0001C21.657 6.99961 23.0001 8.34276 23.0001 9.99961V10.9996C23.0001 12.6565 21.657 13.9996 20.0001 13.9996H9.0001C7.34324 13.9996 6.0001 12.6565 6.0001 10.9996V9.99961ZM9.0001 9.29961H20.0001C20.3867 9.29961 20.7001 9.61301 20.7001 9.99961V10.9996C20.7001 11.3862 20.3867 11.6996 20.0001 11.6996H9.0001C8.6135 11.6996 8.3001 11.3862 8.3001 10.9996V9.99961C8.3001 9.61301 8.6135 9.29961 9.0001 9.29961Z" fill="#22AD01"/><path fill-rule="evenodd" clip-rule="evenodd" d="M0.850098 6.99961C0.850098 3.60306 3.60355 0.849609 7.0001 0.849609H22.0001C25.3966 0.849609 28.1501 3.60306 28.1501 6.99961V18.9996C28.1501 22.3962 25.3966 25.1496 22.0001 25.1496H7.0001C3.60355 25.1496 0.850098 22.3962 0.850098 18.9996V6.99961ZM7.0001 3.14961C4.8738 3.14961 3.1501 4.87331 3.1501 6.99961V18.9996C3.1501 21.1259 4.8738 22.8496 7.0001 22.8496H22.0001C24.1264 22.8496 25.8501 21.1259 25.8501 18.9996V6.99961C25.8501 4.87331 24.1264 3.14961 22.0001 3.14961H7.0001Z" fill="#22AD01"/></svg>
-            <span class="sidenav-features-item-label">Client Portal</span>
           </a>
           <a class="sidenav-features-item" href="#">
             <div class="sidenav-features-item-bg"></div>
@@ -2454,9 +2262,9 @@
                   <h2 class="company-details-name">Michael Fawler</h2>
                   <div class="company-details-info">
                     Senior Manager of Consulting at
-                    <a href="#" class="company-details-info-link" style="color: var(--color-primary);">
+                    <a href="client.html" class="company-details-info-link" style="color: var(--color-primary);">
                       <svg class="company-details-info-icon" width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.1805 8.6079H11.1804C11.1717 10.9139 13.0318 12.7886 15.3358 12.7983H15.3804C17.7 12.7983 19.5803 10.919 19.5803 8.59839C19.5803 6.27912 17.6996 4.39844 15.3804 4.39844C13.0611 4.39844 11.1805 6.27912 11.1805 8.59839V8.6079ZM13.8045 15.1177C10.8557 14.417 8.66842 11.7605 8.68045 8.59839C8.68045 4.89841 11.6804 1.89844 15.3804 1.89844C19.0803 1.89844 22.0803 4.89841 22.0803 8.59839C22.0803 11.7484 19.9079 14.389 16.9804 15.1061C16.5051 15.2226 16.0098 15.2883 15.5007 15.2973C15.4607 15.298 15.4206 15.2983 15.3804 15.2983H15.3313C14.8057 15.2966 14.2946 15.2341 13.8045 15.1177ZM17.1874 17.621C16.6154 17.5866 16.0497 17.5703 15.5007 17.5703C15.4607 17.5703 15.4206 17.5704 15.3804 17.5706C15.364 17.5706 15.3476 17.5707 15.3313 17.5708C15.3287 17.5708 15.3262 17.5709 15.3237 17.5709C14.7674 17.5744 14.1944 17.5949 13.6159 17.634C9.11356 17.9387 4.27197 19.3773 4.27197 22.8239C4.27197 26.7873 10.5621 28.1007 15.5007 28.1007C20.4133 28.1007 26.7279 26.8173 26.7279 22.8542C26.7279 19.3283 21.7598 17.8959 17.1874 17.621ZM8.92088 21.0621C6.96796 21.7935 6.77197 22.5093 6.77197 22.8239C6.77197 23.1636 6.97919 23.8806 8.91458 24.6087C10.7182 25.2871 13.1949 25.6007 15.5007 25.6007C17.7977 25.6007 20.2762 25.2938 22.0844 24.6207C24.0283 23.897 24.2279 23.1842 24.2279 22.8542C24.2279 22.5107 24.0182 21.7927 22.0847 21.0641C20.2818 20.3846 17.806 20.0703 15.5007 20.0703C13.2098 20.0703 10.7308 20.3843 8.92088 21.0621Z" fill="#22AD01"></path></svg>
-                      Adobe
+                      TechStart Labs
                     </a>
                   </div>
                 </div>
@@ -3300,14 +3108,8 @@
         <!-- ====== RIGHT SIDEBAR ====== -->
         <div class="contact-sidebar">
 
-          <!-- Sidebar tab bar -->
-          <div class="sidebar-tab-bar">
-            <div class="sidebar-tab active" id="sidebar-tab-details" onclick="switchSidebarTab('details')">Details</div>
-            <div class="sidebar-tab" id="sidebar-tab-comments" onclick="switchSidebarTab('comments')">Comments <span class="sidebar-tab-count" id="sidebar-comments-count">2</span></div>
-          </div>
-
-          <!-- DETAILS PANEL -->
-          <div id="sidebar-panel-details">
+          <!-- DETAILS PANEL (no tab chrome) -->
+          <div>
 
             <!-- Properties Section -->
             <div class="page-properties-section">
@@ -3395,59 +3197,7 @@
               </div>
             </div>
 
-          </div><!-- /#sidebar-panel-details -->
-
-          <!-- COMMENTS PANEL -->
-          <div id="sidebar-panel-comments" style="display:none;" class="sidebar-comments-panel">
-
-            <div class="sidebar-comments-list" id="sidebar-comments-list">
-
-              <div class="sidebar-comment-item">
-                <div class="sidebar-comment-avatar" style="background:#5b6af5;">JD</div>
-                <div class="sidebar-comment-body">
-                  <div class="sidebar-comment-meta">
-                    <span class="sidebar-comment-name">John Didyeah</span>
-                    <span class="sidebar-comment-time">6 minutes ago</span>
-                  </div>
-                  <div class="sidebar-comment-text">What's the status of this?</div>
-                </div>
-              </div>
-
-              <div class="sidebar-comment-item">
-                <div class="sidebar-comment-avatar" style="background:#5b6af5;">JD</div>
-                <div class="sidebar-comment-body">
-                  <div class="sidebar-comment-meta">
-                    <span class="sidebar-comment-name">John Didyeah</span>
-                    <span class="sidebar-comment-time">4 minutes ago</span>
-                  </div>
-                  <div class="sidebar-comment-text">cc <span class="sidebar-comment-mention">@John Didyeah</span> follow up</div>
-                </div>
-              </div>
-
-            </div><!-- /#sidebar-comments-list -->
-
-            <!-- Composer -->
-            <div class="sidebar-comment-composer">
-              <div class="sidebar-comment-composer-inner">
-                <div class="sidebar-comment-avatar" style="background:#22AD01;margin-top:2px;">LD</div>
-                <div class="sidebar-comment-input-wrap">
-                  <textarea class="sidebar-comment-input" id="sidebar-comment-input" rows="1" placeholder="Add comment…" oninput="autoResizeCommentInput(this)"></textarea>
-                  <div class="sidebar-comment-toolbar">
-                    <div class="sidebar-comment-tool-btns">
-                      <button class="sidebar-comment-tool-btn" title="Emoji">
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M5.5 9.5s.8 1.5 2.5 1.5 2.5-1.5 2.5-1.5" stroke-linecap="round"/><circle cx="5.8" cy="6.5" r=".8" fill="currentColor" stroke="none"/><circle cx="10.2" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>
-                      </button>
-                      <button class="sidebar-comment-tool-btn" title="Mention">
-                        <svg width="13" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="3"/><path d="M10 7c0 2.2.8 3.5 2 3.5s2-1 2-3.5a7 7 0 1 0-2 4.9" stroke-linecap="round"/></svg>
-                      </button>
-                    </div>
-                    <button class="sidebar-comment-submit" onclick="submitSidebarComment()">Comment</button>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /.sidebar-comment-composer -->
-
-          </div><!-- /#sidebar-panel-comments -->
+          </div><!-- /sidebar-details -->
 
         </div>
 
@@ -4285,47 +4035,6 @@
     document.getElementById('add-activity-menu').classList.remove('open');
   }
 
-  // ── Sidebar tab switching (Details / Comments) ──
-  function switchSidebarTab(tab) {
-    document.getElementById('sidebar-panel-details').style.display = tab === 'details' ? '' : 'none';
-    document.getElementById('sidebar-panel-comments').style.display = tab === 'comments' ? 'flex' : 'none';
-    document.getElementById('sidebar-tab-details').classList.toggle('active', tab === 'details');
-    document.getElementById('sidebar-tab-comments').classList.toggle('active', tab === 'comments');
-  }
-
-  // ── Comment submission ──
-  var sidebarComments = [
-    { initials: 'JD', color: '#5b6af5', name: 'John Didyeah', time: '6 minutes ago', text: 'What\'s the status of this?' },
-    { initials: 'JD', color: '#5b6af5', name: 'John Didyeah', time: '4 minutes ago', html: 'cc <span class="sidebar-comment-mention">@John Didyeah</span> follow up' }
-  ];
-
-  function renderSidebarComments() {
-    var list = document.getElementById('sidebar-comments-list');
-    list.innerHTML = sidebarComments.map(function(c) {
-      var text = c.html || escapeHtml(c.text);
-      return '<div class="sidebar-comment-item">'
-        + '<div class="sidebar-comment-avatar" style="background:' + c.color + ';">' + c.initials + '</div>'
-        + '<div class="sidebar-comment-body">'
-        + '<div class="sidebar-comment-meta"><span class="sidebar-comment-name">' + c.name + '</span><span class="sidebar-comment-time">' + c.time + '</span></div>'
-        + '<div class="sidebar-comment-text">' + text + '</div>'
-        + '</div></div>';
-    }).join('');
-    document.getElementById('sidebar-comments-count').textContent = sidebarComments.length;
-  }
-
-  function submitSidebarComment() {
-    var input = document.getElementById('sidebar-comment-input');
-    var val = input.value.trim();
-    if (!val) return;
-    sidebarComments.push({ initials: 'LD', color: '#22AD01', name: 'Lucas Didier', time: 'Just now', text: val });
-    renderSidebarComments();
-    input.value = '';
-    input.style.height = '';
-    // Scroll to bottom
-    var list = document.getElementById('sidebar-comments-list');
-    list.scrollTop = list.scrollHeight;
-  }
-
   function autoResizeCommentInput(el) {
     el.style.height = 'auto';
     el.style.height = Math.min(el.scrollHeight, 120) + 'px';
@@ -4609,6 +4318,10 @@
       <span class="ndp-breadcrumb-sep">/</span>
       <span id="ndp-bc-title">Note</span>
     </div>
+    <div class="ndp-author-av" data-tip="Tom Bradley"
+         style="width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default;position:relative;">
+      TB
+    </div>
     <button class="ndp-btn" data-tip="Copy link">
       <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13H7a4 4 0 010-8h3M10 7h3a4 4 0 010 8h-3M7 10h6"/></svg>
     </button>
@@ -4641,11 +4354,12 @@
 
   <!-- Editor -->
   <div class="ndp-editor" id="ndp-editor">
-    <div class="ndp-title" id="ndp-title" contenteditable="true" spellcheck="false"></div>
+    <div class="ndp-title" id="ndp-title" contenteditable="true" spellcheck="false"
+         data-placeholder="Untitled note"></div>
     <div class="ndp-body" id="ndp-body"
          contenteditable="true"
          spellcheck="false"
-         data-placeholder="Start typing, or press / to add a block…"></div>
+         data-placeholder="Write your note…"></div>
   </div>
 
   <!-- Floating Create AI button -->
@@ -5085,7 +4799,15 @@ function ndpInsertBlock(type) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  var ndpTitle = document.getElementById('ndp-title');
   var ndpBody = document.getElementById('ndp-body');
+
+  ndpTitle.addEventListener('input', function() {
+    if (this.innerHTML === '<br>' || this.innerHTML === '<br/>') this.innerHTML = '';
+  });
+  ndpBody.addEventListener('input', function() {
+    if (this.innerHTML === '<br>' || this.innerHTML === '<br/>') this.innerHTML = '';
+  });
 
   ndpBody.addEventListener('keydown', function(e) {
     if (_ndpSlashMode) {
