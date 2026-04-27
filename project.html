@@ -388,6 +388,12 @@
     .ndp-btn:hover { background: var(--bg-grey-f5); color: var(--text-default); }
     .ndp-btn[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 3px 7px; border-radius: 4px; font-size: 11px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.1s; }
     .ndp-btn[data-tip]:hover::after { opacity: 1; }
+    .ndp-more-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; width: 160px; background: var(--bg-content); border: 1px solid var(--border-content); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.10); z-index: 200; padding: 4px; }
+    .ndp-more-menu.open { display: block; }
+    .ndp-more-menu-item { display: flex; align-items: center; width: 100%; padding: 7px 10px; font-size: 13px; color: var(--text-default); background: none; border: none; border-radius: 4px; cursor: pointer; text-align: left; }
+    .ndp-more-menu-item:hover { background: var(--bg-grey-f5); }
+    .ndp-more-menu-item--danger { color: #eb5757; }
+    .ndp-more-menu-item--danger:hover { background: #fff5f5; }
     .ndp-associations { padding: 14px 28px 0; flex-shrink: 0; }
     .ndp-records-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 28px; }
     .ndp-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px 4px 6px; border-radius: 20px; border: 1px solid var(--border-content); font-size: 12px; font-weight: 500; color: var(--text-default); background: var(--bg-content); cursor: pointer; transition: border-color 0.12s, background 0.12s; }
@@ -765,14 +771,6 @@
               Activity
               <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text-lighter);flex-shrink:0;"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 7h.01" stroke-linecap="round"/></svg>
             </div>
-            <div class="activity-search">
-              <svg class="activity-search-icon" width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="5.5" r="4"/><path d="M9.5 9.5l2 2" stroke-linecap="round"/></svg>
-              <input class="activity-search-input" type="text" placeholder="Search activity...">
-            </div>
-            <button class="activity-filter-btn">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="1" y1="3" x2="13" y2="3"/><line x1="3" y1="7" x2="11" y2="7"/><line x1="5" y1="11" x2="9" y2="11"/></svg>
-              Filter
-            </button>
             <button class="activity-add-btn" onclick="openNewProjectNote()">
               <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
             </button>
@@ -1073,9 +1071,13 @@
          style="width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default;position:relative;">
       TB
     </div>
-    <button class="ndp-btn" data-tip="Copy link"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13H7a4 4 0 010-8h3M10 7h3a4 4 0 010 8h-3M7 10h6"/></svg></button>
-    <button class="ndp-btn" data-tip="Open full page"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12v5h5M17 8V3h-5M3 8V3h5M17 12v5h-5"/></svg></button>
-    <button class="ndp-btn" data-tip="More actions"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg></button>
+    <div style="position:relative;">
+      <button class="ndp-btn" id="ndp-more-btn" onclick="toggleNdpMoreMenu(event)"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg></button>
+      <div class="ndp-more-menu" id="ndp-more-menu">
+        <button class="ndp-more-menu-item" onclick="ndpCopyLink()">Copy Link</button>
+        <button class="ndp-more-menu-item ndp-more-menu-item--danger" onclick="ndpDeleteNote()">Delete</button>
+      </div>
+    </div>
     <div style="width:1px;height:18px;background:var(--border-content);margin:0 4px;"></div>
     <button class="ndp-btn" data-tip="Close" onclick="closeNotePanel()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
   </div>
@@ -1701,7 +1703,22 @@ document.addEventListener('mousedown', function(e) {
   if (!e.target.closest('#ndp-meeting-picker') && !e.target.closest('.ndp-link-meet-btn') && !e.target.closest('.ndp-meet-chip')) ndpCloseMeetingPicker();
   if (!e.target.closest('#ndp-record-picker') && !e.target.closest('.ndp-add-chip')) ndpCloseRecordPicker();
   if (!e.target.closest('#ndp-mention-menu') && !e.target.closest('#ndp-body')) ndpCloseMentionMenu();
+  var m = document.getElementById('ndp-more-menu');
+  if (m && !e.target.closest('#ndp-more-btn') && !e.target.closest('#ndp-more-menu')) m.classList.remove('open');
 });
+
+function toggleNdpMoreMenu(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('ndp-more-menu');
+  menu.classList.toggle('open');
+}
+function ndpCopyLink() {
+  document.getElementById('ndp-more-menu').classList.remove('open');
+}
+function ndpDeleteNote() {
+  document.getElementById('ndp-more-menu').classList.remove('open');
+  closeNotePanel();
+}
 </script>
 
 </body>

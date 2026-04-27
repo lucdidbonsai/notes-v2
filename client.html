@@ -795,7 +795,6 @@
         <div class="subnavigation-item" onclick="switchClientTab('billing', this)">Billing</div>
         <div class="subnavigation-item" onclick="switchClientTab('meetings', this)">Meetings</div>
         <div class="subnavigation-item" onclick="switchClientTab('forms', this)">Forms</div>
-        <div class="subnavigation-item" onclick="switchClientTab('notes', this)">Notes</div>
       </div>
     </div>
 
@@ -1068,74 +1067,6 @@
           <div style="padding: 60px 0; text-align: center; color: var(--text-muted); font-size: 14px;">Forms tab</div>
         </div>
 
-        <!-- ── NOTES TAB ── -->
-        <div id="tab-notes" class="tab-panel">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-            <div style="font-size: 16px; font-weight: 600; color: var(--text-default);">Notes</div>
-            <button onclick="openNewNote('notes')" style="display:inline-flex;align-items:center;gap:6px;padding:0 12px;height:32px;background:var(--bg-grey-f1);color:var(--text-default);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;line-height:1;">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              New Note
-            </button>
-          </div>
-          <div class="notes-table-wrap">
-            <table class="notes-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr onclick="openClientNote(0)" style="cursor:pointer;">
-                  <td class="notes-td-title">Q4 check-in — TechStart account review</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 23, 2026</td>
-                </tr>
-                <tr onclick="openActNote(2)" style="cursor:pointer;">
-                  <td class="notes-td-title">Confidential — Q3 fundraise</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 22, 2026</td>
-                </tr>
-                <tr onclick="openActNote(0)" style="cursor:pointer;">
-                  <td class="notes-td-title">Weekly Sync — TechStart Labs — Jan 23</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 23, 2026</td>
-                </tr>
-                <tr onclick="openActNote(1)" style="cursor:pointer;">
-                  <td class="notes-td-title">Post-Proposal Review — TechStart Labs — Jan 21</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 21, 2026</td>
-                </tr>
-                <tr onclick="openActNote(3)" style="cursor:pointer;">
-                  <td class="notes-td-title">Strategic Planning Offsite — Jan 20</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 20, 2026</td>
-                </tr>
-                <tr onclick="openActNote(4)" style="cursor:pointer;">
-                  <td class="notes-td-title">Discovery Call — TechStart Labs — Jan 14</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 14, 2026</td>
-                </tr>
-                <tr onclick="openClientNote(1)" style="cursor:pointer;">
-                  <td class="notes-td-title">Scope clarification — data architecture module</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 14, 2026</td>
-                </tr>
-                <tr onclick="openClientNote(2)" style="cursor:pointer;">
-                  <td class="notes-td-title">Onboarding wrap-up — retainer confirmed</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Jan 5, 2026</td>
-                </tr>
-                <tr onclick="openClientNote(3)" style="cursor:pointer;">
-                  <td class="notes-td-title">Meeting sync note</td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="notes-author-av" style="background:#f97316;">TB</div><span style="font-size:13px;color:var(--text-default);">Tom Bradley</span></div></td>
-                  <td class="notes-td-date">Dec 28, 2025</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div><!-- /tab-notes -->
 
       </div><!-- /client-main-content -->
 
