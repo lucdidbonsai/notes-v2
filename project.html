@@ -270,7 +270,7 @@
     .notes-author-av { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
     /* ── Note panel: placeholder + author avatar ── */
-    .ndp-author-av[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-default); color: #fff; font-size: 11px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+    .ndp-author-av[data-tip]::after { content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-default); color: #fff; font-size: 11px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
     .ndp-author-av[data-tip]:hover::after { opacity: 1; }
 
     /* ── Documents & Links section ── */
