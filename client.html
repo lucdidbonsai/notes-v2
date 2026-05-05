@@ -642,6 +642,38 @@
     /* Inline mention chip */
     .ndp-mention { color: #5b6af5; font-weight: 500; border-radius: 3px; padding: 0 1px; cursor: default; }
 
+    /* ── NDP More menu ── */
+    .ndp-more-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: var(--bg-content);
+      border: 1px solid var(--border-content);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      z-index: 30010;
+      min-width: 150px;
+      padding: 4px 0;
+      display: none;
+    }
+    .ndp-more-menu.open { display: block; }
+    .ndp-more-menu-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: var(--text-default);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.1s;
+    }
+    .ndp-more-menu-item:hover { background: var(--bg-grey-f5); }
+    .ndp-more-menu-item--danger { color: #eb5757; }
+    .ndp-more-menu-item--danger:hover { background: #fff5f5; }
+
     /* Note item clickable */
     .activity-text-clickable { cursor: pointer; transition: opacity 0.1s; }
     .activity-text-clickable:hover { opacity: 0.85; }
@@ -1205,9 +1237,13 @@
          style="width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default;position:relative;">
       TB
     </div>
-    <button class="ndp-btn" data-tip="Copy link"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13H7a4 4 0 010-8h3M10 7h3a4 4 0 010 8h-3M7 10h6"/></svg></button>
-    <button class="ndp-btn" data-tip="Open full page"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12v5h5M17 8V3h-5M3 8V3h5M17 12v5h-5"/></svg></button>
-    <button class="ndp-btn" data-tip="More actions"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg></button>
+    <div style="position:relative;">
+      <button class="ndp-btn" id="ndp-more-btn" onclick="toggleNdpMoreMenu(event)"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg></button>
+      <div class="ndp-more-menu" id="ndp-more-menu">
+        <button class="ndp-more-menu-item" onclick="ndpCopyLink()">Copy Link</button>
+        <button class="ndp-more-menu-item ndp-more-menu-item--danger" onclick="ndpDeleteNote()">Delete</button>
+      </div>
+    </div>
     <div style="width:1px;height:18px;background:var(--border-content);margin:0 4px;"></div>
     <button class="ndp-btn" data-tip="Close" onclick="closeNotePanel()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
   </div>
@@ -1893,7 +1929,23 @@ document.addEventListener('mousedown', function(e) {
   if (!e.target.closest('#ndp-meeting-picker') && !e.target.closest('.ndp-link-meet-btn') && !e.target.closest('.ndp-meet-chip')) ndpCloseMeetingPicker();
   if (!e.target.closest('#ndp-record-picker') && !e.target.closest('.ndp-add-chip')) ndpCloseRecordPicker();
   if (!e.target.closest('#ndp-mention-menu') && !e.target.closest('#ndp-body')) ndpCloseMentionMenu();
+  var m = document.getElementById('ndp-more-menu');
+  if (m && !e.target.closest('#ndp-more-btn') && !e.target.closest('#ndp-more-menu')) m.classList.remove('open');
 });
+
+function toggleNdpMoreMenu(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('ndp-more-menu');
+  menu.classList.toggle('open');
+}
+function ndpCopyLink() {
+  document.getElementById('ndp-more-menu').classList.remove('open');
+  showToast('Link copied');
+}
+function ndpDeleteNote() {
+  document.getElementById('ndp-more-menu').classList.remove('open');
+  closeNotePanel();
+}
 </script>
 
 </body>

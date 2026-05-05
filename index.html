@@ -762,12 +762,12 @@
     .upcoming-section-wrap {
       margin-bottom: 28px;
     }
-    .history-section-wrap {
+    .activity-section-wrap {
       margin-top: 0;
     }
 
-    /* ── History section note label ── */
-    .history-section-wrap .activity-section-header {
+    /* ── Activity section header ── */
+    .activity-section-wrap .activity-section-header {
       margin-top: 0;
     }
 
@@ -2116,6 +2116,68 @@
     .task-modal-cancel:hover { background: var(--bg-grey-f8); color: var(--text-default); }
     .task-modal-create { font-size: 13px; font-weight: 600; color: #fff; background: #22AD01; border: none; border-radius: 6px; padding: 0 18px; height: 32px; cursor: pointer; font-family: inherit; transition: background 0.1s; }
     .task-modal-create:hover { background: #1d9801; }
+
+    /* ── @ Mention dropdown ── */
+    #ndp-mention-menu {
+      position: fixed;
+      z-index: 30001;
+      background: #fff;
+      border: 1px solid #e4e7e3;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+      width: 280px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 6px 0;
+      display: none;
+    }
+    #ndp-mention-menu.open { display: block; }
+    .ndp-mention-section {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-lighter);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 7px 12px 3px;
+    }
+    .ndp-mention-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-default);
+      transition: background 0.08s;
+    }
+    .ndp-mention-item:hover, .ndp-mention-item.hi { background: var(--bg-grey-f5); }
+    .ndp-mention-av {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .ndp-mention-av.sq { border-radius: 4px; }
+    .ndp-mention-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      background: var(--bg-grey-f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-muted);
+    }
+    .ndp-mention-name { font-weight: 500; }
+    .ndp-mention-sub { font-size: 11px; color: var(--text-muted); }
+    .ndp-mention { color: #5b6af5; font-weight: 500; border-radius: 3px; padding: 0 1px; cursor: default; }
   </style>
 </head>
 <body>
@@ -2433,17 +2495,17 @@
               </div><!-- /upcoming-body -->
             </div><!-- /upcoming-section-wrap -->
 
-            <!-- ── HISTORY SECTION ── -->
-            <div class="history-section-wrap">
-              <div class="activity-section-header" onclick="toggleActivitySection('history')">
-                <svg class="activity-section-chevron" id="history-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- ── ACTIVITY SECTION ── -->
+            <div class="activity-section-wrap">
+              <div class="activity-section-header" onclick="toggleActivitySection('activity')">
+                <svg class="activity-section-chevron" id="activity-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M8 10.828L2.343 5.172a1 1 0 0 0-1.414 1.414l6.364 6.364a1 1 0 0 0 1.414 0l6.364-6.364a1 1 0 0 0-1.414-1.414L8 10.828z" fill="currentColor"/>
                 </svg>
-                <span class="activity-section-label">History</span>
+                <span class="activity-section-label">Activity</span>
                 <div class="activity-section-line"></div>
               </div>
 
-              <div class="activity-section-body" id="history-body">
+              <div class="activity-section-body" id="activity-body">
                 <div id="activity-note-composer-wrap" style="display:none; margin-bottom: 20px;"></div>
 
                 <div class="activity-feed">
@@ -2794,8 +2856,8 @@
               </div>
 
               </div><!-- /activity-feed -->
-              </div><!-- /history-body -->
-            </div><!-- /history-section-wrap -->
+              </div><!-- /activity-body -->
+            </div><!-- /activity-section-wrap -->
           </div><!-- /tab-activity -->
 
           <!-- ── NOTES TAB ── -->
@@ -4486,6 +4548,9 @@
   </button>
 </div>
 
+<!-- @ Mention dropdown -->
+<div id="ndp-mention-menu"></div>
+
 <!-- ══════════════════════════════════════════
      MEETING PICKER
 ══════════════════════════════════════════ -->
@@ -5012,6 +5077,167 @@ function ndpAddRecord(name, initials, color) {
   ndpCloseRecordPicker();
 }
 
+/* ════════════════════════════════════════════
+   @ MENTION SYSTEM
+════════════════════════════════════════════ */
+var _mentionData = [
+  { type: 'teammate', section: 'Teammates', name: 'Tom Bradley',    sub: 'Account Manager',     color: '#f97316', initials: 'TB' },
+  { type: 'teammate', section: 'Teammates', name: 'Chris Taylor',   sub: 'Account Executive',   color: '#6c6fd4', initials: 'CT' },
+  { type: 'teammate', section: 'Teammates', name: 'Lucas Didier',   sub: 'Founder',             color: '#22AD01', initials: 'LD' },
+  { type: 'teammate', section: 'Teammates', name: 'Sarah Chen',     sub: 'Head of Marketing',   color: '#ec4899', initials: 'SC' },
+  { type: 'project',  section: 'Projects',  name: 'Marketing Campaign',      sub: 'In Progress', color: '#7c3aed', initials: 'P', sq: true },
+  { type: 'project',  section: 'Projects',  name: 'Website Redesign',        sub: 'Ready',       color: '#0d9488', initials: 'P', sq: true },
+  { type: 'project',  section: 'Projects',  name: 'Enterprise CRM Integration', sub: 'In Review', color: '#f97316', initials: 'P', sq: true },
+  { type: 'task',     section: 'Tasks',     name: 'Finalize proposal deck',   sub: 'Unassigned', icon: '✓' },
+  { type: 'task',     section: 'Tasks',     name: 'Review Q1 budget',         sub: 'Tom Bradley', icon: '✓' },
+  { type: 'task',     section: 'Tasks',     name: 'Follow up with legal',     sub: 'Chris Taylor', icon: '✓' },
+  { type: 'deal',     section: 'Deals',     name: 'Enterprise Plan — $85K',   sub: 'Contract Review', color: '#22AD01', initials: '$' },
+  { type: 'deal',     section: 'Deals',     name: 'Market Entry Strategy',    sub: '$15,000 · Active', color: '#22AD01', initials: '$' },
+  { type: 'contact',  section: 'Client Contacts', name: 'Michael Fawler',    sub: 'Head of Operations · TechStart Labs', color: '#4c525a', initials: 'MF' },
+  { type: 'contact',  section: 'Client Contacts', name: 'Daniel Harris',     sub: 'Operations Manager',                  color: '#3b82f6', initials: 'DH' },
+  { type: 'contact',  section: 'Client Contacts', name: 'Priya Nair',        sub: 'Billing Lead',                        color: '#ec4899', initials: 'PN' }
+];
+
+var _mentionMode = false, _mentionQuery = '', _mentionRange = null, _mentionHiIdx = 0;
+
+function _buildMentionMenu(query) {
+  var menu = document.getElementById('ndp-mention-menu');
+  var filtered = _mentionData.filter(function(m) {
+    return !query || m.name.toLowerCase().includes(query.toLowerCase());
+  });
+  if (!filtered.length) { menu.classList.remove('open'); return; }
+  var sections = {};
+  filtered.forEach(function(m) {
+    if (!sections[m.section]) sections[m.section] = [];
+    sections[m.section].push(m);
+  });
+  var html = '';
+  Object.keys(sections).forEach(function(sec) {
+    html += '<div class="ndp-mention-section">' + sec + '</div>';
+    sections[sec].forEach(function(m) {
+      var avHtml = '';
+      if (m.icon) {
+        avHtml = '<div class="ndp-mention-icon">' + m.icon + '</div>';
+      } else if (m.color) {
+        avHtml = '<div class="ndp-mention-av' + (m.sq ? ' sq' : '') + '" style="background:' + m.color + ';">' + m.initials + '</div>';
+      }
+      html += '<div class="ndp-mention-item" data-name="' + m.name + '" data-type="' + m.type + '" onclick="ndpSelectMention(\'' + m.name.replace(/'/g,"\\'") + '\',\'' + m.type + '\')">' +
+        avHtml +
+        '<div><div class="ndp-mention-name">' + m.name + '</div><div class="ndp-mention-sub">' + m.sub + '</div></div>' +
+        '</div>';
+    });
+  });
+  menu.innerHTML = html;
+  menu.classList.add('open');
+  _mentionHiIdx = 0;
+  _updateMentionHighlight();
+}
+
+function _updateMentionHighlight() {
+  var items = _mentionMenuItems();
+  items.forEach(function(it, i) { it.classList.toggle('hi', i === _mentionHiIdx); });
+}
+
+function _mentionMenuItems() {
+  return Array.from(document.querySelectorAll('#ndp-mention-menu .ndp-mention-item'));
+}
+
+function _ndpOpenMentionMenu(rect) {
+  var menu = document.getElementById('ndp-mention-menu');
+  var top = rect.bottom + window.scrollY + 4;
+  var left = rect.left + window.scrollX;
+  if (left + 290 > window.innerWidth - 20) left = window.innerWidth - 300;
+  menu.style.top = top + 'px';
+  menu.style.left = left + 'px';
+}
+
+function ndpCloseMentionMenu() {
+  var menu = document.getElementById('ndp-mention-menu');
+  if (menu) menu.classList.remove('open');
+  _mentionMode = false; _mentionQuery = ''; _mentionRange = null; _mentionHiIdx = 0;
+}
+
+function ndpSelectMention(name, type) {
+  if (_mentionRange) {
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(_mentionRange);
+    var range = sel.getRangeAt(0);
+    range.setStart(_mentionRange.startContainer, _mentionRange.startOffset - 1 - _mentionQuery.length);
+    range.deleteContents();
+  }
+  ndpCloseMentionMenu();
+  var span = document.createElement('span');
+  span.className = 'ndp-mention';
+  span.contentEditable = 'false';
+  span.dataset.type = type;
+  span.textContent = '@' + name;
+  var space = document.createTextNode(' ');
+  var sel2 = window.getSelection();
+  if (sel2.rangeCount) {
+    var r = sel2.getRangeAt(0);
+    r.insertNode(space);
+    r.insertNode(span);
+    r.setStartAfter(space);
+    r.collapse(true);
+    sel2.removeAllRanges();
+    sel2.addRange(r);
+  }
+  document.getElementById('ndp-body').focus();
+}
+
+/* Wire @mention onto ndp-body after DOM ready */
+document.addEventListener('DOMContentLoaded', function() {
+  var ndpBody = document.getElementById('ndp-body');
+  if (!ndpBody) return;
+
+  ndpBody.addEventListener('keydown', function(e) {
+    if (_mentionMode) {
+      if (e.key === 'Escape') { e.preventDefault(); ndpCloseMentionMenu(); return; }
+      if (e.key === 'ArrowDown') { e.preventDefault(); _mentionHiIdx = Math.min(_mentionHiIdx + 1, _mentionMenuItems().length - 1); _updateMentionHighlight(); return; }
+      if (e.key === 'ArrowUp') { e.preventDefault(); _mentionHiIdx = Math.max(_mentionHiIdx - 1, 0); _updateMentionHighlight(); return; }
+      if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); var items = _mentionMenuItems(); if (items[_mentionHiIdx]) items[_mentionHiIdx].click(); return; }
+    }
+  });
+
+  ndpBody.addEventListener('input', function() {
+    var sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    var range = sel.getRangeAt(0);
+    var node = range.startContainer;
+    var text = node.textContent || '';
+    var offset = range.startOffset;
+    var atIdx = text.lastIndexOf('@', offset - 1);
+    if (atIdx >= 0) {
+      var beforeAt = text.substring(0, atIdx);
+      if (atIdx === 0 || /[\s]/.test(beforeAt[beforeAt.length - 1])) {
+        _mentionMode = true;
+        if (!_mentionRange) {
+          _mentionRange = range.cloneRange();
+          _mentionRange.setStart(node, atIdx + 1);
+          _mentionRange.setEnd(node, atIdx + 1);
+        }
+        _mentionQuery = text.substring(atIdx + 1, offset);
+        var atCharRange = document.createRange();
+        atCharRange.setStart(node, atIdx);
+        atCharRange.setEnd(node, atIdx + 1);
+        _ndpOpenMentionMenu(atCharRange.getBoundingClientRect());
+        _buildMentionMenu(_mentionQuery);
+        return;
+      }
+    }
+    if (_mentionMode) {
+      var hasAt = text.substring(0, offset).lastIndexOf('@') >= 0;
+      if (!hasAt) ndpCloseMentionMenu();
+      else {
+        var newAtIdx = text.substring(0, offset).lastIndexOf('@');
+        _mentionQuery = text.substring(newAtIdx + 1, offset);
+        _buildMentionMenu(_mentionQuery);
+      }
+    }
+  });
+});
+
 /* ═══════════════════════════════════════════════
    GLOBAL OUTSIDE-CLICK CLOSE
 ═══════════════════════════════════════════════ */
@@ -5020,6 +5246,7 @@ document.addEventListener('mousedown', function(e) {
   if (!e.target.closest('#ndp-format-toolbar') && !e.target.closest('#ndp-body')) ndpCloseFormatToolbar();
   if (!e.target.closest('#ndp-meeting-picker') && !e.target.closest('.ndp-link-meet-btn') && !e.target.closest('.ndp-meet-chip')) ndpCloseMeetingPicker();
   if (!e.target.closest('#ndp-record-picker') && !e.target.closest('.ndp-add-chip')) ndpCloseRecordPicker();
+  if (!e.target.closest('#ndp-mention-menu') && !e.target.closest('#ndp-body')) ndpCloseMentionMenu();
 });
 </script>
 
