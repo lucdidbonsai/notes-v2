@@ -1752,15 +1752,46 @@
       box-shadow: -4px 0 32px rgba(0,0,0,0.1);
     }
     .ndp-top {
-      display: flex; align-items: center; gap: 5px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
       padding: 0 20px; height: 50px;
       border-bottom: 1px solid var(--border-content); flex-shrink: 0;
     }
-    .ndp-top-icon { color: var(--text-muted); display: flex; align-items: center; margin-right: 2px; }
-    .ndp-breadcrumb { flex: 1; font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ndp-breadcrumb a { color: var(--text-muted); text-decoration: none; }
-    .ndp-breadcrumb a:hover { color: var(--text-default) !important; text-decoration: underline; }
-    .ndp-breadcrumb-sep { margin: 0 5px; }
+    .ndp-visibility {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text-muted);
+      flex: 1; min-width: 0;
+    }
+    .ndp-top-right {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .ndp-top-date {
+      font-size: 13px; color: var(--text-muted);
+    }
+    /* ── Panel toggle tab ── */
+    .ndp-toggle-tab {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+      width: 20px;
+      height: 48px;
+      background: var(--bg-content);
+      border: 1px solid var(--border-content);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9998;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+      transition: right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--text-muted);
+    }
+    .ndp-toggle-tab:hover { background: var(--bg-grey-f5); color: var(--text-default); }
+    .ndp-toggle-tab.panel-open { right: 720px; }
+    .ndp-toggle-tab svg { transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    .ndp-toggle-tab.panel-open svg { transform: rotate(180deg); }
     .ndp-btn {
       width: 30px; height: 30px; border-radius: 6px;
       background: none; border: none; cursor: pointer;
@@ -4397,36 +4428,39 @@
 <!-- ══════════════════════════════════════════
      NOTE DETAIL PANEL
 ══════════════════════════════════════════ -->
+<div class="ndp-toggle-tab" id="ndp-toggle-tab" onclick="toggleNotePanel()">
+  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 1 2 7 6 13"/>
+  </svg>
+</div>
 <div class="note-panel-overlay" id="note-panel-overlay" onclick="closePanelOnOverlay(event)"></div>
 <div class="note-detail-panel" id="note-detail-panel">
 
   <!-- Top bar -->
   <div class="ndp-top">
-    <div class="ndp-top-icon">
-      <svg width="15" height="15" viewBox="0 0 20 22" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 0C1.34315 0 0 1.34315 0 3V19C0 20.6569 1.34315 22 3 22H17C18.6569 22 20 20.6569 20 19V7.82843C20 7.03278 19.6839 6.26972 19.1213 5.70711L14.2929 0.878679C13.7303 0.316071 12.9672 0 12.1716 0H3ZM2 3C2 2.44772 2.44772 2 3 2H11V7C11 8.10457 11.8954 9 13 9H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V3ZM17.5858 7H13V2.41421L17.5858 7ZM5 12C5 11.4477 5.44772 11 6 11H14C14.5523 11 15 11.4477 15 12C15 12.5523 14.5523 13 14 13H6C5.44772 13 5 12.5523 5 12ZM6 15C5.44772 15 5 15.4477 5 16C5 16.5523 5.44772 17 6 17H10C10.5523 17 11 16.5523 11 16C11 15.4477 10.5523 15 10 15H6Z" fill="currentColor"/></svg>
+    <div class="ndp-visibility">
+      <svg width="13" height="14" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="8" width="12" height="9" rx="2"/>
+        <path d="M4 8V5a3 3 0 016 0v3"/>
+      </svg>
+      Not visible to client
     </div>
-    <div class="ndp-breadcrumb" id="ndp-breadcrumb">
-      <a href="#" onclick="return false;" id="ndp-bc-parent">Michael Fawler</a>
-      <span class="ndp-breadcrumb-sep">/</span>
-      <span id="ndp-bc-title">Note</span>
-    </div>
-    <div class="ndp-author-av" data-tip="Tom Bradley"
-         style="width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default;position:relative;">
-      TB
-    </div>
-    <div style="position:relative;">
-      <button class="ndp-btn" id="ndp-more-btn" onclick="toggleNdpMoreMenu(event)">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg>
-      </button>
-      <div class="ndp-more-menu" id="ndp-more-menu">
-        <button class="ndp-more-menu-item" onclick="ndpCopyLink()">Copy Link</button>
-        <button class="ndp-more-menu-item ndp-more-menu-item--danger" onclick="ndpDeleteNote()">Delete</button>
+    <div class="ndp-top-right">
+      <span class="ndp-top-date" id="ndp-top-date">Monday, May 18, 2026</span>
+      <div class="ndp-author-av" data-tip="Tom Bradley"
+           style="width:28px;height:28px;border-radius:50%;background:#f97316;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default;position:relative;">
+        TB
+      </div>
+      <div style="position:relative;">
+        <button class="ndp-btn" id="ndp-more-btn" onclick="toggleNdpMoreMenu(event)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="14" cy="8" r="1.5"/></svg>
+        </button>
+        <div class="ndp-more-menu" id="ndp-more-menu">
+          <button class="ndp-more-menu-item" onclick="ndpCopyLink()">Copy Link</button>
+          <button class="ndp-more-menu-item ndp-more-menu-item--danger" onclick="ndpDeleteNote()">Delete</button>
+        </div>
       </div>
     </div>
-    <div style="width:1px;height:18px;background:var(--border-content);margin:0 4px;"></div>
-    <button class="ndp-btn" data-tip="Close" onclick="closeNotePanel()">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l12 12M13 1L1 13"/></svg>
-    </button>
   </div>
 
   <!-- Record associations -->
@@ -4776,9 +4810,15 @@ function ndpRemoveMeeting() {
   document.getElementById('ndp-meeting-slot').innerHTML = _ndpLinkMeetBtnHTML();
 }
 
+function toggleNotePanel() {
+  var panel = document.getElementById('note-detail-panel');
+  if (panel.classList.contains('open')) { closeNotePanel(); } else { _ndpOpenPanel(); }
+}
+
 function _ndpOpenPanel() {
   document.getElementById('note-panel-overlay').classList.add('open');
   document.getElementById('note-detail-panel').classList.add('open');
+  document.getElementById('ndp-toggle-tab').classList.add('panel-open');
   // Wire todo checkboxes
   document.querySelectorAll('#ndp-body .ndp-todo-cb').forEach(function(cb) {
     cb.addEventListener('click', function() { cb.classList.toggle('checked'); });
@@ -4795,6 +4835,7 @@ function toggleNdpCreateMenu(e) {
 function closeNotePanel() {
   document.getElementById('note-detail-panel').classList.remove('open');
   document.getElementById('note-panel-overlay').classList.remove('open');
+  document.getElementById('ndp-toggle-tab').classList.remove('panel-open');
   document.getElementById('task-modal-overlay').classList.add('hidden');
   document.getElementById('ndp-create-menu').classList.remove('open');
   ndpCloseSlashMenu(); ndpCloseFormatToolbar(); ndpCloseMeetingPicker(); ndpCloseRecordPicker();
