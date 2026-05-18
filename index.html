@@ -4168,7 +4168,8 @@
   }
 
   // Allow Cmd/Ctrl+Enter to submit
-  document.getElementById('sidebar-comment-input').addEventListener('keydown', function(e) {
+  var _scInput = document.getElementById('sidebar-comment-input');
+  if (_scInput) _scInput.addEventListener('keydown', function(e) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') submitSidebarComment();
   });
 
@@ -4698,10 +4699,6 @@ function openNoteFromItem(noteItem, context) {
   var author = authorEl ? authorEl.textContent : '';
   var dateText = metaEl ? metaEl.textContent.replace(author,'').replace('added a note','').replace(/[·\s]+/g,'').trim() : 'just now';
 
-  // Set breadcrumb
-  document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
-  document.getElementById('ndp-bc-title').textContent = 'Note';
-
   // Set title from meeting noteTitle when opened from a Zoom note card
   var resolvedTitle = '';
   if (typeof meetTitle !== 'undefined' && meetTitle) {
@@ -4742,8 +4739,6 @@ function openNoteByMeeting(id) {
   closeMeetingOverlay();
   _ndpCurrentSteps = m.nextSteps || null;
   _ndpNsTaskState = {};
-  document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
-  document.getElementById('ndp-bc-title').textContent = 'Note';
   document.getElementById('ndp-title').textContent = m.noteTitle.replace(/^Zoom AI:\s*/i, '');
   var _zoomHdr = '<div class="zoom-ai-note-meeting-ref">Meeting: <strong>' + m.title + '</strong> &middot; ' + m.duration + ' &middot; Added by Zoom'
     + (m.recording ? ' &middot; <a href="' + m.recording + '" target="_blank" class="zoom-note-link">View Recording <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>' : '')
@@ -4759,8 +4754,6 @@ function openNewNote(context) {
   closeAllNoteMenus();
   _ndpCurrentSteps = null;
   _ndpNsTaskState = {};
-  document.getElementById('ndp-bc-parent').textContent = 'Michael Fawler';
-  document.getElementById('ndp-bc-title').textContent = 'New note';
   document.getElementById('ndp-title').textContent = '';
   document.getElementById('ndp-body').innerHTML = '';
 
