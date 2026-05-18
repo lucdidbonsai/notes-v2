@@ -1740,7 +1740,7 @@
     }
     .note-panel-overlay.open { display: block; }
     .note-detail-panel {
-      position: fixed; top: 0; right: 0; width: 720px; height: 100%;
+      position: fixed; top: 0; right: 0; width: 600px; height: 100%;
       background: var(--bg-content); border-left: 1px solid var(--border-content);
       display: flex; flex-direction: column;
       transform: translateX(100%);
@@ -1773,23 +1773,22 @@
       top: 50%;
       transform: translateY(-50%);
       right: 0;
-      width: 20px;
-      height: 48px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
       background: var(--bg-content);
       border: 1px solid var(--border-content);
-      border-right: none;
-      border-radius: 6px 0 0 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 9998;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+      box-shadow: -1px 1px 4px rgba(0,0,0,0.10);
       transition: right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--text-muted);
     }
     .ndp-toggle-tab:hover { background: var(--bg-grey-f5); color: var(--text-default); }
-    .ndp-toggle-tab.panel-open { right: 720px; }
+    .ndp-toggle-tab.panel-open { right: 589px; }
     .ndp-toggle-tab svg { transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
     .ndp-toggle-tab.panel-open svg { transform: rotate(180deg); }
     .ndp-btn {
@@ -4458,7 +4457,7 @@
         </button>
         <div class="ndp-more-menu" id="ndp-more-menu">
           <button class="ndp-more-menu-item" onclick="ndpCopyLink()">Copy Link</button>
-          <button class="ndp-more-menu-item ndp-more-menu-item--danger" onclick="ndpDeleteNote()">Delete</button>
+          <button class="ndp-more-menu-item" onclick="ndpDeleteNote()">Delete</button>
         </div>
       </div>
     </div>
